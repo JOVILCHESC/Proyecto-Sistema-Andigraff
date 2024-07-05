@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Método de Pago</title>
+<link rel="stylesheet" href="../Styles/crear_metodo_pago.css">
+</head>
+<body>
+
+<form action="procesar_metodo_pago.php" method="POST">
+  <div class="logo-container">
+    <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+    <h1>Formulario de Metodo de Pago</h1>
+  </div>
+  <label for="descripcion_pago">Descripción de Pago:</label>
+  <input type="text" id="descripcion_pago" name="descripcion_pago" maxlength="255"><br><br>
+
+  <label for="comisiones">Comisiones (%):</label>
+  <input type="number" id="comisiones" name="comisiones" step="0.01" min="0" max="100"><br><br>
+
+  <label for="tiempo_procesamiento">Tiempo de Procesamiento (horas):</label>
+  <input type="number" id="tiempo_procesamiento" name="tiempo_procesamiento" min="0" max="24"><br><br>
+
+  <input type="submit" value="Guardar">
+</form>
+
+</body>
+</html>

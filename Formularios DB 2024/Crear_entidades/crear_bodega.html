@@ -1,0 +1,153 @@
+<!-- <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Bodega</title>
+<link rel="stylesheet" href="../Styles/crear_bodega.css">
+</head>
+<body>
+
+<form action="procesar_formulario.php" method="POST">
+  <div class="logo-container">
+    <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+    <h1>Formulario de Bodega</h1>
+  </div>
+
+  <label for="cod_establecimiento">Código de Establecimiento:</label>
+  <input type="number" id="cod_establecimiento" name="cod_establecimiento" required><br><br>
+
+  <label for="telefono">Teléfono:</label>
+  <input type="tel" id="telefono" name="telefono"><br><br>
+
+  <label for="numero_establecimiento">Número de Establecimiento:</label>
+  <input type="number" id="numero_establecimiento" name="numero_establecimiento"><br><br>
+
+  <label for="comuna_establecimiento">Comuna:</label>
+  <input type="text" id="comuna_establecimiento" name="comuna_establecimiento"><br><br>
+
+  <label for="calle_establecimiento">Calle:</label>
+  <input type="text" id="calle_establecimiento" name="calle_establecimiento"><br><br>
+
+  <label for="ciudad_establecimiento">Ciudad:</label>
+  <input type="text" id="ciudad_establecimiento" name="ciudad_establecimiento"><br><br>
+
+  <label for="nombre_establecimiento">Nombre de Establecimiento:</label>
+  <input type="text" id="nombre_establecimiento" name="nombre_establecimiento"><br><br>
+
+  <label for="cant_empleados">Cantidad de Empleados:</label>
+  <input type="number" id="cant_empleados" name="cant_empleados"><br><br>
+
+  <label for="Capacidad">Capacidad:</label>
+  <input type="number" id="Capacidad" name="Capacidad"><br><br>
+
+  <label for="Tipo_almacenamiento">Tipo de Almacenamiento:</label>
+  <input type="text" id="Tipo_almacenamiento" name="Tipo_almacenamiento"><br><br>
+
+  <label for="estado_bodega">Estado de Bodega:</label>
+  <select id="estado_bodega" name="estado_bodega">
+    <option value="1">Activo</option>
+    <option value="0">Inactivo</option>
+  </select><br><br>
+
+  <input type="submit" value="Guardar">
+</form>
+
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Bodega</title>
+<!-- Incluye Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../Styles/crear_bodega.css">
+</head>
+<body>
+
+<div class="container">
+  <form action="procesar_formulario.php" method="POST">
+    <div class="logo-container text-center">
+      <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+      <h1>Formulario de Bodega</h1>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="cod_establecimiento">Código de Establecimiento:</label>
+        <input type="number" class="form-control" id="cod_establecimiento" name="cod_establecimiento" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" class="form-control" id="telefono" name="telefono">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="numero_establecimiento">Número de Establecimiento:</label>
+        <input type="number" class="form-control" id="numero_establecimiento" name="numero_establecimiento">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="comuna_establecimiento">Comuna:</label>
+        <input type="text" class="form-control" id="comuna_establecimiento" name="comuna_establecimiento">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="calle_establecimiento">Calle:</label>
+        <input type="text" class="form-control" id="calle_establecimiento" name="calle_establecimiento">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="ciudad_establecimiento">Ciudad:</label>
+        <input type="text" class="form-control" id="ciudad_establecimiento" name="ciudad_establecimiento">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="nombre_establecimiento">Nombre de Establecimiento:</label>
+        <input type="text" class="form-control" id="nombre_establecimiento" name="nombre_establecimiento">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="cant_empleados">Cantidad de Empleados:</label>
+        <input type="number" class="form-control" id="cant_empleados" name="cant_empleados">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="Capacidad">Capacidad:</label>
+        <input type="number" class="form-control" id="Capacidad" name="Capacidad">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="Tipo_almacenamiento">Tipo de Almacenamiento:</label>
+        <input type="text" class="form-control" id="Tipo_almacenamiento" name="Tipo_almacenamiento">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="estado_bodega">Estado de Bodega:</label>
+      <select id="estado_bodega" name="estado_bodega" class="form-control">
+        <option value="1">Activo</option>
+        <option value="0">Inactivo</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>
+
+<!-- Incluye Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Proveedor</title>
+    <link rel="stylesheet" href="../Styles/crear_proveedor.css">
+</head>
+<body>
+    <form action="guardar_proveedor.php" method="POST">
+        <div class="logo-container">
+            <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+            <h1>Formulario de Proveedor</h1>
+          </div>
+        <label for="nombre_proveedor">Nombre del Proveedor:</label>
+        <input type="text" id="nombre_proveedor" name="nombre_proveedor" required>
+
+        <label for="contacto_principal">Contacto Principal:</label>
+        <input type="text" id="contacto_principal" name="contacto_principal">
+
+        <label for="email_proveedor">Email del Proveedor:</label>
+        <input type="email" id="email_proveedor" name="email_proveedor" required>
+
+        <label for="telefono_proveedor">Teléfono del Proveedor:</label>
+        <input type="tel" id="telefono_proveedor" name="telefono_proveedor">
+
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad">
+
+        <label for="pais">País:</label>
+        <input type="text" id="pais" name="pais">
+
+        <label for="estado_proveedor">Estado del Proveedor:</label>
+        <select id="estado_proveedor" name="estado_proveedor">
+            <option value="0">Inactivo</option>
+            <option value="1">Activo</option>
+        </select>
+
+        <input type="submit" value="Guardar">
+    </form>
+</body>
+</html>

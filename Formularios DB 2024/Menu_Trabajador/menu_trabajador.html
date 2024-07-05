@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Trabajador</title>
+    <link rel="stylesheet" href="../Styles//menu_trabajador.css">
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Menú de Usuario Trabajador</h1>
+        <div class="menu-buttons">
+            <button onclick="redirigir('../Crear_entidades/crear_factura.html')">Crear Factura</button>
+            <button onclick="redirigir('../Crear_entidades/crear_orden_compra.html')">Crear Orden de Compra</button>
+            <button onclick="redirigir('../Crear_entidades/crear_venta.html')">Crear Venta</button>
+            <button onclick="redirigir('../Crear_entidades/crear_guia_despacho.html')">Crear Guía de Despacho</button>
+        </div>
+    </div>
+
+    <script>
+        function redirigir(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
+
+

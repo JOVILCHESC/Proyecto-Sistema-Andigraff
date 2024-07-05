@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Factura</title>
+<link rel="stylesheet" href="../Styles/crear_factura.css">
+</head>
+<body>
+
+<form action="procesar_factura.php" method="POST">
+  <div class="logo-container">
+    <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+    <h1>Formulario de Factura</h1>
+  </div>
+  <label for="rut">RUT:</label>
+  <input type="text" id="rut" name="rut" required pattern="[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9Kk]{1}" placeholder="Ejemplo: 12.345.678-9"><br><br>
+
+  <label for="lugar_emision">Lugar de Emisión:</label>
+  <input type="text" id="lugar_emision" name="lugar_emision" value="SIN_ESPECIFICAR"><br><br>
+
+  <label for="fecha_emision">Fecha de Emisión:</label>
+  <input type="date" id="fecha_emision" name="fecha_emision" value="SIN_ESPECIFICAR"><br><br>
+
+  <label for="descripcion">Descripción de la Operación:</label>
+  <textarea id="descripcion" name="descripcion" maxlength="255"></textarea><br><br>
+
+  <label for="direccion_entrega">Dirección de Entrega:</label>
+  <textarea id="direccion_entrega" name="direccion_entrega" maxlength="255"></textarea><br><br>
+
+  <input type="submit" value="Guardar">
+</form>
+
+</body>
+</html>
