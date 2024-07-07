@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actualizar Bodega</title>
+<!-- Incluye Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../Styles/actualizar_bodega.css">
+<script>
+    function buscarBodega() {
+        const codEstablecimiento = document.getElementById('buscar_cod_establecimiento').value;
+        if (codEstablecimiento) {
+            // Simulación de búsqueda: se debe reemplazar con la lógica real
+            // Aquí debería ir la llamada AJAX para obtener los datos del servidor
+            // Ejemplo de datos simulados:
+            const data = {
+                telefono: "987654321",
+                numero_establecimiento: "456",
+                comuna_establecimiento: "Comuna Ejemplo",
+                calle_establecimiento: "Calle Falsa 123",
+                ciudad_establecimiento: "Ciudad Ejemplo",
+                nombre_establecimiento: "Bodega Ejemplo",
+                cant_empleados: "50",
+                capacidad: "1000",
+                tipo_almacenamiento: "Refrigerado",
+                estado_bodega: "1"
+            };
+            document.getElementById('telefono').value = data.telefono;
+            document.getElementById('numero_establecimiento').value = data.numero_establecimiento;
+            document.getElementById('comuna_establecimiento').value = data.comuna_establecimiento;
+            document.getElementById('calle_establecimiento').value = data.calle_establecimiento;
+            document.getElementById('ciudad_establecimiento').value = data.ciudad_establecimiento;
+            document.getElementById('nombre_establecimiento').value = data.nombre_establecimiento;
+            document.getElementById('cant_empleados').value = data.cant_empleados;
+            document.getElementById('capacidad').value = data.capacidad;
+            document.getElementById('tipo_almacenamiento').value = data.tipo_almacenamiento;
+            document.getElementById('estado_bodega').value = data.estado_bodega;
+        } else {
+            alert('Por favor, ingrese un Código de Establecimiento');
+        }
+    }
+</script>
+</head>
+<body>
+
+<div class="container">
+  <div class="buscar-container text-center mb-4">
+    <h1>Buscar Bodega por Código de Establecimiento</h1>
+    <label for="buscar_cod_establecimiento">Código de Establecimiento:</label>
+    <input type="number" id="buscar_cod_establecimiento" name="buscar_cod_establecimiento" class="form-control" required>
+    <button type="button" class="btn btn-primary mt-2" onclick="buscarBodega()">Buscar</button>
+  </div>
+
+  <form action="procesar_actualizacion_bodega.php" method="POST">
+    <div class="logo-container text-center">
+      <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+      <h1>Formulario de Actualización de Bodega</h1>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="cod_establecimiento">Código de Establecimiento:</label>
+        <input type="number" class="form-control" id="cod_establecimiento" name="cod_establecimiento" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" class="form-control" id="telefono" name="telefono">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="numero_establecimiento">Número de Establecimiento:</label>
+        <input type="number" class="form-control" id="numero_establecimiento" name="numero_establecimiento">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="comuna_establecimiento">Comuna:</label>
+        <input type="text" class="form-control" id="comuna_establecimiento" name="comuna_establecimiento">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="calle_establecimiento">Calle:</label>
+        <input type="text" class="form-control" id="calle_establecimiento" name="calle_establecimiento">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="ciudad_establecimiento">Ciudad:</label>
+        <input type="text" class="form-control" id="ciudad_establecimiento" name="ciudad_establecimiento">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="nombre_establecimiento">Nombre de Establecimiento:</label>
+        <input type="text" class="form-control" id="nombre_establecimiento" name="nombre_establecimiento">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="cant_empleados">Cantidad de Empleados:</label>
+        <input type="number" class="form-control" id="cant_empleados" name="cant_empleados">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="capacidad">Capacidad:</label>
+        <input type="number" class="form-control" id="capacidad" name="capacidad">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="tipo_almacenamiento">Tipo de Almacenamiento:</label>
+        <input type="text" class="form-control" id="tipo_almacenamiento" name="tipo_almacenamiento">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="estado_bodega">Estado de Bodega:</label>
+      <select id="estado_bodega" name="estado_bodega" class="form-control">
+        <option value="1">Activo</option>
+        <option value="0">Inactivo</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+  </form>
+</div>
+
+<!-- Incluye Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
