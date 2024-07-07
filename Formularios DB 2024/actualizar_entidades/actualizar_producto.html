@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actualizar Producto</title>
+<link rel="stylesheet" href="../Styles/actualizar_producto.css">
+<style>
+  /* Puedes añadir estilos adicionales si es necesario */
+</style>
+<script>
+  function buscarProducto() {
+    const idProducto = document.getElementById('id_producto').value;
+    if (idProducto) {
+      // Aquí se debe realizar la lógica para buscar el producto en la base de datos
+      // Puedes usar AJAX para obtener los datos del servidor
+      // Ejemplo de datos simulados:
+      const data = {
+        numero_lote: 123,
+        nombre_producto: "Producto de ejemplo",
+        precio_unitario: 100,
+        stock: 50,
+        tamano: 10.5,
+        tipo_producto: "Tipo de producto",
+        peso_unitario: 0.5,
+        estado_producto: 1, // Activo
+        iva: 0.19,
+        descripcion_producto: "Descripción del producto actualizada",
+        categoria: "Categoria del producto",
+        stock_critico: 10
+      };
+      // Actualiza los campos del formulario con los datos obtenidos
+      document.getElementById('numero_lote').value = data.numero_lote;
+      document.getElementById('nombre_producto').value = data.nombre_producto;
+      document.getElementById('precio_unitario').value = data.precio_unitario;
+      document.getElementById('stock').value = data.stock;
+      document.getElementById('tamano').value = data.tamano;
+      document.getElementById('tipo_producto').value = data.tipo_producto;
+      document.getElementById('peso_unitario').value = data.peso_unitario;
+      document.getElementById('estado_producto').value = data.estado_producto;
+      document.getElementById('iva').value = data.iva;
+      document.getElementById('descripcion_producto').value = data.descripcion_producto;
+      document.getElementById('categoria').value = data.categoria;
+      document.getElementById('stock_critico').value = data.stock_critico;
+    } else {
+      alert('Por favor, ingrese un ID de producto para buscar.');
+    }
+  }
+</script>
+</head>
+<body>
+
+<form id="form_actualizar" action="procesar_actualizacion_producto.php" method="POST">
+  <div class="logo-container">
+    <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+    <h1>Actualizar Producto</h1>
+  </div>
+  <label for="id_producto">ID de Producto:</label>
+  <input type="text" id="id_producto" name="id_producto" required><br><br>
+
+  <button type="button" onclick="buscarProducto()">Buscar Producto</button><br><br>
+
+  <label for="numero_lote">Número de Lote:</label>
+  <input type="number" id="numero_lote" name="numero_lote" step="1" min="1" required><br><br>
+
+  <label for="nombre_producto">Nombre del Producto:</label>
+  <input type="text" id="nombre_producto" name="nombre_producto" maxlength="50" required><br><br>
+
+  <label for="precio_unitario">Precio Unitario:</label>
+  <input type="number" id="precio_unitario" name="precio_unitario" step="1" min="0" required><br><br>
+
+  <label for="stock">Stock:</label>
+  <input type="number" id="stock" name="stock" step="1" min="0" required><br><br>
+
+  <label for="tamano">Tamaño:</label>
+  <input type="number" id="tamano" name="tamano" step="0.01" min="0" required><br><br>
+
+  <label for="tipo_producto">Tipo de Producto:</label>
+  <input type="text" id="tipo_producto" name="tipo_producto" maxlength="255" required><br><br>
+
+  <label for="peso_unitario">Peso Unitario:</label>
+  <input type="number" id="peso_unitario" name="peso_unitario" step="0.01" min="0" required><br><br>
+
+  <label for="estado_producto">Estado del Producto:</label>
+  <select id="estado_producto" name="estado_producto" required>
+    <option value="0">Inactivo</option>
+    <option value="1">Activo</option>
+  </select><br><br>
+
+  <label for="iva">IVA:</label>
+  <input type="number" id="iva" name="iva" step="0.01" min="0" max="0.19" required><br><br>
+
+  <label for="descripcion_producto">Descripción del Producto:</label>
+  <textarea id="descripcion_producto" name="descripcion_producto" rows="4" cols="50" required></textarea><br><br>
+
+  <label for="categoria">Categoría:</label>
+  <input type="text" id="categoria" name="categoria" maxlength="40" required><br><br>
+
+  <label for="stock_critico">Stock Crítico:</label>
+  <input type="number" id="stock_critico" name="stock_critico" step="1" min="0" required><br><br>
+
+  <input type="submit" value="Actualizar Producto">
+</form>
+
+</body>
+</html>

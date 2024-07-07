@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actualizar Proveedor</title>
+<link rel="stylesheet" href="../Styles/actualizar_proveedor.css">
+<style>
+  /* Puedes añadir estilos adicionales si es necesario */
+</style>
+<script>
+  function buscarProveedor() {
+    const idProveedor = document.getElementById('id_proveedor').value;
+    if (idProveedor) {
+      // Aquí se debe realizar la lógica para buscar el proveedor en la base de datos
+      // Puedes usar AJAX para obtener los datos del servidor
+      // Ejemplo de datos simulados:
+      const data = {
+        nombre_proveedor: "Proveedor de ejemplo",
+        contacto_principal: "Contacto Principal",
+        email_proveedor: "proveedor@example.com",
+        telefono_proveedor: "123456789",
+        ciudad: "Ciudad proveedor",
+        pais: "País proveedor",
+        estado_proveedor: 1 // Activo
+      };
+      // Actualiza los campos del formulario con los datos obtenidos
+      document.getElementById('nombre_proveedor').value = data.nombre_proveedor;
+      document.getElementById('contacto_principal').value = data.contacto_principal;
+      document.getElementById('email_proveedor').value = data.email_proveedor;
+      document.getElementById('telefono_proveedor').value = data.telefono_proveedor;
+      document.getElementById('ciudad').value = data.ciudad;
+      document.getElementById('pais').value = data.pais;
+      document.getElementById('estado_proveedor').value = data.estado_proveedor;
+    } else {
+      alert('Por favor, ingrese un ID de proveedor para buscar.');
+    }
+  }
+</script>
+</head>
+<body>
+
+<form id="form_actualizar" action="procesar_actualizacion_proveedor.php" method="POST">
+  <div class="logo-container">
+    <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+    <h1>Actualizar Proveedor</h1>
+  </div>
+  <label for="id_proveedor">ID de Proveedor:</label>
+  <input type="text" id="id_proveedor" name="id_proveedor" required><br><br>
+
+  <button type="button" onclick="buscarProveedor()">Buscar Proveedor</button><br><br>
+
+  <label for="nombre_proveedor">Nombre del Proveedor:</label>
+  <input type="text" id="nombre_proveedor" name="nombre_proveedor" required><br><br>
+
+  <label for="contacto_principal">Contacto Principal:</label>
+  <input type="text" id="contacto_principal" name="contacto_principal"><br><br>
+
+  <label for="email_proveedor">Email del Proveedor:</label>
+  <input type="email" id="email_proveedor" name="email_proveedor" required><br><br>
+
+  <label for="telefono_proveedor">Teléfono del Proveedor:</label>
+  <input type="tel" id="telefono_proveedor" name="telefono_proveedor"><br><br>
+
+  <label for="ciudad">Ciudad:</label>
+  <input type="text" id="ciudad" name="ciudad"><br><br>
+
+  <label for="pais">País:</label>
+  <input type="text" id="pais" name="pais"><br><br>
+
+  <label for="estado_proveedor">Estado del Proveedor:</label>
+  <select id="estado_proveedor" name="estado_proveedor">
+    <option value="0">Inactivo</option>
+    <option value="1">Activo</option>
+  </select><br><br>
+
+  <input type="submit" value="Actualizar Proveedor">
+</form>
+
+</body>
+</html>

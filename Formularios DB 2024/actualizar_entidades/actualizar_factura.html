@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actualizar Factura</title>
+<link rel="stylesheet" href="../Styles/actualizar_factura.css">
+<script>
+    function buscarFactura() {
+        const rut = document.getElementById('buscar_rut').value;
+        if (rut) {
+            // Simulación de búsqueda: se debe reemplazar con la lógica real
+            // Aquí debería ir la llamada AJAX para obtener los datos del servidor
+            // Ejemplo de datos simulados:
+            const data = {
+                rut: rut,
+                lugar_emision: "Santiago",
+                fecha_emision: "2023-07-01",
+                descripcion: "Venta de productos",
+                direccion_entrega: "Av. Siempre Viva 123"
+            };
+            document.getElementById('rut').value = data.rut;
+            document.getElementById('lugar_emision').value = data.lugar_emision;
+            document.getElementById('fecha_emision').value = data.fecha_emision;
+            document.getElementById('descripcion').value = data.descripcion;
+            document.getElementById('direccion_entrega').value = data.direccion_entrega;
+        } else {
+            alert('Por favor, ingrese un RUT');
+        }
+    }
+</script>
+</head>
+<body>
+
+<div class="buscar-container">
+    <h1>Buscar Factura por RUT</h1>
+    <label for="buscar_rut">RUT:</label>
+    <input type="text" id="buscar_rut" name="buscar_rut" required pattern="[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9Kk]{1}" placeholder="Ejemplo: 12.345.678-9">
+    <button type="button" onclick="buscarFactura()">Buscar</button>
+</div>
+
+<form action="procesar_actualizacion_factura.php" method="POST">
+  <div class="logo-container">
+    <img src="../Images/anidgraf-Photoroom.png" alt="Logo">
+    <h1>Formulario de Actualización de Factura</h1>
+  </div>
+  <label for="rut">RUT:</label>
+  <input type="text" id="rut" name="rut" readonly><br><br>
+
+  <label for="lugar_emision">Lugar de Emisión:</label>
+  <input type="text" id="lugar_emision" name="lugar_emision"><br><br>
+
+  <label for="fecha_emision">Fecha de Emisión:</label>
+  <input type="date" id="fecha_emision" name="fecha_emision"><br><br>
+
+  <label for="descripcion">Descripción de la Operación:</label>
+  <textarea id="descripcion" name="descripcion" maxlength="255"></textarea><br><br>
+
+  <label for="direccion_entrega">Dirección de Entrega:</label>
+  <textarea id="direccion_entrega" name="direccion_entrega" maxlength="255"></textarea><br><br>
+
+  <input type="submit" value="Actualizar">
+</form>
+
+</body>
+</html>
