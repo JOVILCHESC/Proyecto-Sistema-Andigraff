@@ -100,7 +100,7 @@ https://templatemo.com/tm-559-zay-shop
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="/login">Login</a></li>
-                            <li><a class="dropdown-item" href="/worker_register.php">Register</a></li>
+                            <li><a class="dropdown-item" href="../Andigraff Inicio/user_register.html">Register</a></li>
                         </ul>
                     </div>
                 </div>
