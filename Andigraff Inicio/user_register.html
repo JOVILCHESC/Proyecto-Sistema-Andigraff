@@ -1,101 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Formulario para registrar un usuario -->
     <form action="user_register.php" method="POST">
         <h2>Registro de Usuario</h2>
-        
-        <!-- Campos comunes para todos los usuarios -->
-        <label for="rut">RUT:</label>
-        <input type="text" id="rut" name="rut" required><br><br>
-        
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
-        
-        <label for="apellido_paterno">Apellido Paterno:</label>
-        <input type="text" id="apellido_paterno" name="apellido_paterno" required><br><br>
-        
-        <label for="apellido_materno">Apellido Materno:</label>
-        <input type="text" id="apellido_materno" name="apellido_materno"><br><br>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required><br><br>
-        
-        <label for="sexo">Sexo:</label>
-        <input type="text" id="sexo" name="sexo"><br><br>
-        
-        <label for="calle">Calle:</label>
-        <input type="text" id="calle" name="calle"><br><br>
-        
-        <label for="numero">Número:</label>
-        <input type="text" id="numero" name="numero"><br><br>
-        
-        <label for="comuna">Comuna:</label>
-        <input type="text" id="comuna" name="comuna"><br><br>
-        
-        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"><br><br>
-        
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono"><br><br>
-        
-        <!-- Selector de tipo de usuario -->
-        <label for="tipo_usuario">Tipo de Usuario:</label>
-        <select id="tipo_usuario" name="tipo_usuario" required>
-            <option value="cliente">Cliente</option>
-            <option value="trabajador">Trabajador</option>
-        </select><br><br>
-        
-        <!-- Campos específicos para trabajador -->
-        <div id="campos_trabajador" style="display: none;">
+
+        <div class="form-group">
+            <label for="rut">RUT:</label>
+            <input type="text" id="rut" name="rut" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label for="apellido_paterno">Apellido Paterno:</label>
+            <input type="text" id="apellido_paterno" name="apellido_paterno" required>
+        </div>
+
+        <div class="form-group">
+            <label for="apellido_materno">Apellido Materno:</label>
+            <input type="text" id="apellido_materno" name="apellido_materno">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+
+        <div class="form-group">
+            <label for="sexo">Sexo:</label>
+            <input type="text" id="sexo" name="sexo">
+        </div>
+
+        <div class="form-group">
+            <label for="calle">Calle:</label>
+            <input type="text" id="calle" name="calle">
+        </div>
+
+        <div class="form-group">
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero">
+        </div>
+
+        <div class="form-group">
+            <label for="comuna">Comuna:</label>
+            <input type="text" id="comuna" name="comuna">
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono">
+        </div>
+
+        <div class="form-group">
+            <label for="tipo_usuario">Tipo de Usuario:</label>
+            <select id="tipo_usuario" name="tipo_usuario" required>
+                <option value="cliente">Cliente</option>
+                <option value="trabajador">Trabajador</option>
+            </select>
+        </div>
+
+        <div id="campos_trabajador" class="form-group" style="display: none;">
             <label for="cargo">Cargo (Trabajador):</label>
-            <input type="text" id="cargo" name="cargo"><br><br>
-            
-            <!-- <label for="fecha_contratacion">Fecha de Contratación:</label>
-            <input type="date" id="fecha_contratacion" name="fecha_contratacion"><br><br>
-             -->
-            <!-- <label for="estado_laboral">Estado Laboral:</label>
-            <select id="estado_laboral" name="estado_laboral">
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-            </select><br><br> -->
-            
+            <input type="text" id="cargo" name="cargo">
+
             <label for="estado_civil">Estado Civil:</label>
-            <input type="text" id="estado_civil" name="estado_civil" value="SIN_ESPECIFICAR"><br><br>
-            
+            <input type="text" id="estado_civil" name="estado_civil" value="SIN_ESPECIFICAR">
+
             <label for="num_credencial">Número de Credencial:</label>
-            <input type="text" id="num_credencial" name="num_credencial" value="0"><br><br>
+            <input type="text" id="num_credencial" name="num_credencial" value="0">
         </div>
-        
-        <!-- Campos específicos para cliente -->
-        <div id="campos_cliente" style="display: none;">
+
+        <div id="campos_cliente" class="form-group" style="display: none;">
             <label for="tipo_cliente">Tipo de Cliente:</label>
-            <input type="text" id="tipo_cliente" name="tipo_cliente" value="SIN_ESPECIFICAR"><br><br>
+            <input type="text" id="tipo_cliente" name="tipo_cliente" value="SIN_ESPECIFICAR">
         </div>
-        
+
         <input type="submit" value="Registrar">
     </form>
 
     <script>
-    // Mostrar campos específicos según el tipo de usuario seleccionado
-    document.getElementById('tipo_usuario').addEventListener('change', function() {
-        var tipoUsuario = this.value;
-        if (tipoUsuario === 'trabajador') {
-            document.getElementById('campos_trabajador').style.display = 'block';
-            document.getElementById('campos_cliente').style.display = 'none';
-        } else if (tipoUsuario === 'cliente') {
-            document.getElementById('campos_cliente').style.display = 'block';
-            document.getElementById('campos_trabajador').style.display = 'none';
-        }
-    });
+        document.getElementById('tipo_usuario').addEventListener('change', function() {
+            var tipoUsuario = this.value;
+            document.getElementById('campos_trabajador').style.display = (tipoUsuario === 'trabajador') ? 'block' : 'none';
+            document.getElementById('campos_cliente').style.display = (tipoUsuario === 'cliente') ? 'block' : 'none';
+        });
     </script>
 </body>
 </html>
