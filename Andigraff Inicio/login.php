@@ -51,7 +51,7 @@
             session_start();
             $_SESSION['rut'] = $rut;
             $_SESSION['tipo_usuario'] = pg_fetch_assoc($result_login)['tipo_usuario'];
-            header("location: dashboard.php"); // Redirigir al dashboard o página principal
+            header("location: dashboard_admin.php"); // Redirigir al dashboard o página principal
         } else {
             echo "<p>El RUT o la contraseña son incorrectos. Por favor, intenta nuevamente.</p>";
         }
