@@ -99,8 +99,8 @@ https://templatemo.com/tm-559-zay-shop
                             <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="/login">Login</a></li>
-                            <li><a class="dropdown-item" href="../Andigraff Inicio/user_register.html">Register</a></li>
+                            <li><a class="dropdown-item" href="../Andigraff Inicio/login.php">Login</a></li>
+                            <li><a class="dropdown-item" href="../Andigraff Inicio/user_register_form.php">Register</a></li>
                         </ul>
                     </div>
                 </div>

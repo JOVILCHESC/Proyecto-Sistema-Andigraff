@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/register.css">
 </head>
 <body>
     <form action="user_register.php" method="POST">
@@ -70,6 +70,7 @@
             <input type="text" id="telefono" name="telefono">
         </div>
 
+
         <div class="form-group">
             <label for="tipo_usuario">Tipo de Usuario:</label>
             <select id="tipo_usuario" name="tipo_usuario" required>
@@ -80,18 +81,57 @@
 
         <div id="campos_trabajador" class="form-group" style="display: none;">
             <label for="cargo">Cargo (Trabajador):</label>
-            <input type="text" id="cargo" name="cargo">
-
+            <select id="cargo" name="cargo">
+                <option value="Ventas RXX">Ventas</option>
+                <option value="Contabilidad">Contabilidad</option>
+                <option value="Tesorería">Tesorería</option>
+                <option value="Facturación">Facturación</option>
+                <option value="Bodegas">Bodegas</option>
+            </select>
+        
             <label for="estado_civil">Estado Civil:</label>
-            <input type="text" id="estado_civil" name="estado_civil" value="SIN_ESPECIFICAR">
-
+            <select id="estado_civil" name="estado_civil">
+                <option value="SOLTERO">Soltero</option>
+                <option value="CASADO">Casado</option>
+                <option value="DIVORCIADO">Divorciado</option>
+                <option value="VIUDO">Viudo</option>
+            </select>
+        
             <label for="num_credencial">Número de Credencial:</label>
             <input type="text" id="num_credencial" name="num_credencial" value="0">
+        
+            <label for="cod_establecimiento">Sucursal:</label>
+            <select id="cod_establecimiento" name="cod_establecimiento">
+                <!-- Opciones de sucursales deben ser cargadas dinámicamente desde la base de datos -->
+                <?php
+                // Obtener la conexión a la base de datos
+                require_once('config/config.php');
+                $conn = getDBConnection();
+                
+                // Consulta para obtener las sucursales disponibles
+                $query_sucursales = "SELECT cod_establecimiento, nombre_establecimiento FROM SUCURSAL";
+                $result_sucursales = pg_query($conn, $query_sucursales);
+                
+                // Iterar sobre los resultados y generar opciones
+                while ($row = pg_fetch_assoc($result_sucursales)) {
+                    echo "<option value=\"" . $row['cod_establecimiento'] . "\">" . $row['nombre_establecimiento'] . "</option>";
+                }
+                
+                // Cerrar la conexión
+                pg_close($conn);
+                ?>
+            </select>
         </div>
+        
+
+        
 
         <div id="campos_cliente" class="form-group" style="display: none;">
             <label for="tipo_cliente">Tipo de Cliente:</label>
-            <input type="text" id="tipo_cliente" name="tipo_cliente" value="SIN_ESPECIFICAR">
+            <select id="tipo_cliente" name="tipo_cliente">
+                <option value="minorista">Minorista</option>
+                <option value="mayorista">Mayorista</option>
+            </select>
         </div>
 
         <input type="submit" value="Registrar">
@@ -106,3 +146,4 @@
     </script>
 </body>
 </html>
+
