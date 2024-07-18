@@ -8,7 +8,8 @@
 </head>
 <body>
 <?php
-    $file = '../responsive-sidebar-navigation-master/responsive-sidebar-navigation-master/index.html';
+    // $file = '../responsive-sidebar-navigation-master/responsive-sidebar-navigation-master/index.html';
+    $file = './sidebar/sidebar.html';
 
     if (file_exists($file)) {
         include($file);
