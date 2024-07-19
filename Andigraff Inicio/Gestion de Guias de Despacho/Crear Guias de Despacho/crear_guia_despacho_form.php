@@ -1,18 +1,26 @@
+<?php
+session_start();
+if (!isset($_SESSION['rut'])) {
+    header("Location: login.php");
+    exit();
+}
+$rut_usuario = $_SESSION['rut'];
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Guía de Despacho</title>
-    <link rel="stylesheet" href="../styles/crear_guia_despacho.css"> <!-- Asegúrate de que la ruta al archivo CSS sea correcta -->
+    <link rel="stylesheet" href="../styles/crear_guia_despacho.css">
 </head>
 <body>
-    <form action="procesar_registro.php" method="post">
+    <form action="crear_guia_despacho.php" method="post">
         <h2>Registro de Guía de Despacho</h2>
         
         <div class="form-group">
             <label for="rut">RUT</label>
-            <input type="text" id="rut" name="rut" required>
+            <input type="text" id="rut" name="rut" value="<?php echo htmlspecialchars($rut_usuario); ?>" readonly>
         </div>
         
         <div class="form-group">
