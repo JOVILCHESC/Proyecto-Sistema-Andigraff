@@ -60,6 +60,8 @@
 
         $guides = [];
         while ($row = pg_fetch_assoc($result)) {
+            // Convert 'condicion_entrega' from string to boolean
+            $row['condicion_entrega'] = ($row['condicion_entrega'] === 't') ? true : false;
             $guides[] = $row;
         }
 
@@ -78,7 +80,6 @@
                         <th>Dirección de Origen</th>
                         <th>Dirección de Destino</th>
                         <th>Condición de Entrega</th>
-                        <th>Estado de Despacho</th>
                         <th>Fecha de Emisión</th>
                         <th>Acciones</th>
                     </tr>
@@ -91,12 +92,11 @@
                     <td>{$guide['direccion_origen']}</td>
                     <td>{$guide['direccion_destino']}</td>
                     <td>" . ($guide['condicion_entrega'] ? 'Entregado' : 'No Entregado') . "</td>
-                    <td>" . ($guide['estado_despacho'] ? 'Despachado' : 'No Despachado') . "</td>
                     <td>{$guide['fecha_emicion_guia_despacho']}</td>
                     <td class='actions'>
                         <a href='ver_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Ver'><i class='fas fa-eye'></i></a>
                         <a href='../Actualizar Guia de Despacho/actualizar_guia_despacho_form.php?id={$guide['num_guia_despacho']}' title='Editar'><i class='fas fa-edit'></i></a>
-                        <a href='eliminar_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta guía?\");'><i class='fas fa-trash'></i></a>
+                        <a href='../Eliminar Guias de Despacho/eliminar_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta guía?\");'><i class='fas fa-trash'></i></a>
                     </td>
                   </tr>";
         }
