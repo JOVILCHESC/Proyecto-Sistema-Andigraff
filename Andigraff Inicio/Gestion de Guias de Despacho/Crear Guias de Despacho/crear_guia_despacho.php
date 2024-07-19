@@ -10,7 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $direccion_origen = $_POST['direccion_origen'];
     $direccion_destino = $_POST['direccion_destino'];
     $condicion_entrega = isset($_POST['condicion_entrega']) ? (bool) $_POST['condicion_entrega'] : null;
-    $estado_despacho = isset($_POST['estado_despacho']) ? (bool) $_POST['estado_despacho'] : null;
+
+    // Ajustar estado_despacho a true por defecto si no se proporciona
+    $estado_despacho = isset($_POST['estado_despacho']) ? (bool) $_POST['estado_despacho'] : true;
+
     $fecha_emicion_guia_despacho = $_POST['fecha_emicion_guia_despacho'];
 
     // Incluir el archivo de configuración para obtener la conexión

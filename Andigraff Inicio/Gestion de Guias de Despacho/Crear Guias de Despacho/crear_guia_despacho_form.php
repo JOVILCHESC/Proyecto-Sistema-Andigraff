@@ -41,14 +41,13 @@ $rut_usuario = $_SESSION['rut'];
             </select>
         </div>
         
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
             <label for="estado_despacho">Estado de Despacho</label>
             <select id="estado_despacho" name="estado_despacho">
                 <option value="1">Despachado</option>
                 <option value="0">No Despachado</option>
             </select>
         </div>
-        
         <div class="form-group">
             <label for="fecha_emicion_guia_despacho">Fecha de Emisión</label>
             <input type="date" id="fecha_emicion_guia_despacho" name="fecha_emicion_guia_despacho">
