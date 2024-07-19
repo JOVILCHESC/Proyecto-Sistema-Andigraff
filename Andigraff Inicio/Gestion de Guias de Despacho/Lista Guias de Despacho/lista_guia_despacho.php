@@ -6,6 +6,8 @@
     <title>Lista de Guías de Despacho</title>
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <style>
         /* Estilo básico para los iconos de los botones */
         .actions {
@@ -24,89 +26,98 @@
 <body>
     <h1>Lista de Guías de Despacho</h1>
     
-    <?php
-    // PostgreSQL connection parameters
-    $host = "magallanes.inf.unap.cl";
-    $port = "5432";
-    $dbname = "jvilches"; // Replace with your actual database name
-    $user = "jvilches"; // Replace with your actual username
-    $password = "wEtbEQzH6v44"; // Replace with your actual password
+    <table id="guidesTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Dirección de Origen</th>
+                <th>Dirección de Destino</th>
+                <th>Condición de Entrega</th>
+                <th>Fecha de Emisión</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // PostgreSQL connection parameters
+            $host = "magallanes.inf.unap.cl";
+            $port = "5432";
+            $dbname = "jvilches";
+            $user = "jvilches";
+            $password = "wEtbEQzH6v44";
 
-    // Create connection string
-    $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";
+            // Create connection string
+            $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";
 
-    // Function to connect to the database
-    function getDBConnection() {
-        global $connectionString;
-        $connect = pg_connect($connectionString);
+            // Function to connect to the database
+            function getDBConnection() {
+                global $connectionString;
+                $connect = pg_connect($connectionString);
 
-        if (!$connect) {
-            die('Error al conectar a la base de datos');
-        }
+                if (!$connect) {
+                    die('Error al conectar a la base de datos');
+                }
 
-        return $connect;
-    }
+                return $connect;
+            }
 
-    // Fetch data from the database
-    function fetchGuides() {
-        $connection = getDBConnection();
-        $query = 'SELECT num_guia_despacho, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho FROM guia_despacho';
-        $result = pg_query($connection, $query);
+            // Fetch data from the database
+            function fetchGuides() {
+                $connection = getDBConnection();
+                $query = 'SELECT num_guia_despacho, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho FROM guia_despacho';
+                $result = pg_query($connection, $query);
 
-        if (!$result) {
-            echo "Error en la consulta.";
-            return [];
-        }
+                if (!$result) {
+                    echo "Error en la consulta.";
+                    return [];
+                }
 
-        $guides = [];
-        while ($row = pg_fetch_assoc($result)) {
-            // Convert 'condicion_entrega' from string to boolean
-            $row['condicion_entrega'] = ($row['condicion_entrega'] === 't') ? true : false;
-            $guides[] = $row;
-        }
+                $guides = [];
+                while ($row = pg_fetch_assoc($result)) {
+                    // Convert 'condicion_entrega' from string to boolean
+                    $row['condicion_entrega'] = ($row['condicion_entrega'] === 't') ? true : false;
+                    $guides[] = $row;
+                }
 
-        return $guides;
-    }
+                return $guides;
+            }
 
-    // Display the data
-    $guides = fetchGuides();
-    if (empty($guides)) {
-        echo "<p>No hay guías de despacho disponibles.</p>";
-    } else {
-        echo "<table border='1'>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Dirección de Origen</th>
-                        <th>Dirección de Destino</th>
-                        <th>Condición de Entrega</th>
-                        <th>Fecha de Emisión</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>";
+            // Display the data
+            $guides = fetchGuides();
+            if (empty($guides)) {
+                echo "<p>No hay guías de despacho disponibles.</p>";
+            } else {
+                foreach ($guides as $guide) {
+                    echo "<tr>
+                            <td>{$guide['num_guia_despacho']}</td>
+                            <td>{$guide['direccion_origen']}</td>
+                            <td>{$guide['direccion_destino']}</td>
+                            <td>" . ($guide['condicion_entrega'] ? 'Entregado' : 'No Entregado') . "</td>
+                            <td>{$guide['fecha_emicion_guia_despacho']}</td>
+                            <td class='actions'>
+                                <a href='ver_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Ver'><i class='fas fa-eye'></i></a>
+                                <a href='../Actualizar Guia de Despacho/actualizar_guia_despacho_form.php?id={$guide['num_guia_despacho']}' title='Editar'><i class='fas fa-edit'></i></a>
+                                <a href='../Eliminar Guias de Despacho/eliminar_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta guía?\");'><i class='fas fa-trash'></i></a>
+                            </td>
+                          </tr>";
+                }
+            }
 
-        foreach ($guides as $guide) {
-            echo "<tr>
-                    <td>{$guide['num_guia_despacho']}</td>
-                    <td>{$guide['direccion_origen']}</td>
-                    <td>{$guide['direccion_destino']}</td>
-                    <td>" . ($guide['condicion_entrega'] ? 'Entregado' : 'No Entregado') . "</td>
-                    <td>{$guide['fecha_emicion_guia_despacho']}</td>
-                    <td class='actions'>
-                        <a href='ver_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Ver'><i class='fas fa-eye'></i></a>
-                        <a href='../Actualizar Guia de Despacho/actualizar_guia_despacho_form.php?id={$guide['num_guia_despacho']}' title='Editar'><i class='fas fa-edit'></i></a>
-                        <a href='../Eliminar Guias de Despacho/eliminar_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta guía?\");'><i class='fas fa-trash'></i></a>
-                    </td>
-                  </tr>";
-        }
+            // Close the connection
+            pg_close(getDBConnection());
+            ?>
+        </tbody>
+    </table>
 
-        echo "  </tbody>
-              </table>";
-    }
-
-    // Close the connection
-    pg_close(getDBConnection());
-    ?>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- Initialize DataTables -->
+    <script>
+        $(document).ready(function() {
+            $('#guidesTable').DataTable();
+        });
+    </script>
 </body>
 </html>
