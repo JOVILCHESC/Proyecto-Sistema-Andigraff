@@ -1,22 +1,18 @@
-<?php
-session_start();
-if (!isset($_SESSION['rut'])) {
-    header("Location: login.php");
-    exit();
-}
-$rut_usuario = $_SESSION['rut'];
-?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Guía de Despacho</title>
-    <link rel="stylesheet" href="../styles/crear_guia_despacho.css">
+    <link rel="stylesheet" href="../Gestion/prueba.css">
+    <title>Document</title>
 </head>
 <body>
-
-    <form action="crear_guia_despacho.php" method="post">
+    <div class="cd-sidebar">
+        <?php include '../sidebar.html'; ?> 
+    </div>
+    <div class="cd-content-wrapper">
+        <div class="text-component text-center">
+        <form action="crear_guia_despacho.php" method="post">
         <h2>Registro de Guía de Despacho</h2>
         
         <div class="form-group">
@@ -56,6 +52,9 @@ $rut_usuario = $_SESSION['rut'];
         
         <input type="submit" value="Registrar">
     </form>
+        </div>
+    </div>
 
+    
 </body>
 </html>
