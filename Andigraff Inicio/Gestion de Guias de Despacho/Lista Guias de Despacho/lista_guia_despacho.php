@@ -64,7 +64,9 @@
             // Fetch data from the database
             function fetchGuides() {
                 $connection = getDBConnection();
-                $query = 'SELECT num_guia_despacho, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho FROM guia_despacho';
+                $query = 'SELECT num_guia_despacho, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho 
+                          FROM guia_despacho
+                          WHERE estado_despacho = true'; // Filtra por estado_despacho = true
                 $result = pg_query($connection, $query);
 
                 if (!$result) {
