@@ -21,6 +21,53 @@
         .actions a:hover {
             color: #007bff;
         }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -97,7 +144,6 @@
                             <td>" . ($guide['condicion_entrega'] ? 'Entregado' : 'No Entregado') . "</td>
                             <td>{$guide['fecha_emicion_guia_despacho']}</td>
                             <td class='actions'>
-                                <a href='ver_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Ver'><i class='fas fa-eye'></i></a>
                                 <a href='../Actualizar Guia de Despacho/actualizar_guia_despacho_form.php?id={$guide['num_guia_despacho']}' title='Editar'><i class='fas fa-edit'></i></a>
                                 <a href='../Eliminar Guias de Despacho/eliminar_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta guía?\");'><i class='fas fa-trash'></i></a>
                             </td>
@@ -110,6 +156,8 @@
             ?>
         </tbody>
     </table>
+    
+    <a href="../../sidebar/sidebar.html" class="button">Regresar al Inicio</a>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -123,3 +171,4 @@
     </script>
 </body>
 </html>
+

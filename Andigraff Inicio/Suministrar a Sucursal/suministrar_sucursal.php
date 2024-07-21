@@ -26,36 +26,42 @@ $productos = $_POST['productos'];
 $cantidad_suministrada = $_POST['cantidad_suministrada'];
 $fecha_suministra = $_POST['fecha_suministra'];
 
-// Insertar el suministro en la base de datos
-$queryInsertSuministro = "INSERT INTO suministra (cod_establecimiento, suc_cod_establecimiento, cantidad_suministrada, fecha_suministra) VALUES ($1, $2, $3, $4) RETURNING suc_cod_establecimiento, cod_establecimiento";
-$resultInsertSuministro = pg_query_params($conn, $queryInsertSuministro, [$bodega, $sucursal, $cantidad_suministrada, $fecha_suministra]);
+// Iniciar una transacción
+pg_query($conn, "BEGIN");
 
-if (!$resultInsertSuministro) {
-    echo "Error en la inserción del suministro: " . pg_last_error($conn);
-    exit();
-}
+try {
+    // Insertar el suministro en la base de datos
+    $queryInsertSuministro = "INSERT INTO suministra (cod_establecimiento, suc_cod_establecimiento, cantidad_suministrada, fecha_suministra) 
+                              VALUES ($1, $2, $3, $4)";
+    $resultInsertSuministro = pg_query_params($conn, $queryInsertSuministro, [$bodega, $sucursal, $cantidad_suministrada, $fecha_suministra]);
 
-// Obtener los valores insertados para verificar
-$result = pg_fetch_assoc($resultInsertSuministro);
-$suc_cod_establecimiento = $result['suc_cod_establecimiento'];
-$cod_establecimiento = $result['cod_establecimiento'];
-
-// Insertar los productos suministrados
-$queryInsertProducto = "INSERT INTO suministra (suc_cod_establecimiento, cod_establecimiento, cod_producto, cantidad) VALUES ($1, $2, $3, $4)";
-foreach ($productos as $index => $producto) {
-    $cantidad = $cantidades[$index];
-    $resultInsertProducto = pg_query_params($conn, $queryInsertProducto, [$suc_cod_establecimiento, $cod_establecimiento, $producto, $cantidad]);
-
-    if (!$resultInsertProducto) {
-        echo "Error en la inserción del producto: " . pg_last_error($conn);
-        exit();
+    if (!$resultInsertSuministro) {
+        throw new Exception("Error en la inserción del suministro: " . pg_last_error($conn));
     }
+
+    // Insertar los productos suministrados
+    $queryInsertProducto = "INSERT INTO suministra_productos (suc_cod_establecimiento, cod_establecimiento, cod_producto, cantidad) VALUES ($1, $2, $3, $4)";
+    foreach ($productos as $index => $producto) {
+        $cantidad = $cantidades[$index];
+        $resultInsertProducto = pg_query_params($conn, $queryInsertProducto, [$sucursal, $bodega, $producto, $cantidad]);
+
+        if (!$resultInsertProducto) {
+            throw new Exception("Error en la inserción del producto: " . pg_last_error($conn));
+        }
+    }
+
+    // Confirmar la transacción
+    pg_query($conn, "COMMIT");
+    header("Location: exito.php");
+    exit();
+
+} catch (Exception $e) {
+    // Deshacer la transacción en caso de error
+    pg_query($conn, "ROLLBACK");
+    echo $e->getMessage();
+    exit();
 }
 
 // Cerrar la conexión
 pg_close($conn);
-
-// Redirigir a una página de éxito o mostrar un mensaje
-header("Location: exito.php");
-exit();
 ?>
