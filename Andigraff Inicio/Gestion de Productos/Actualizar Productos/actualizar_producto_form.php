@@ -47,16 +47,16 @@ if ($result_lotes) {
 }
 
 // Obtener los IDs de proveedores
-$query_proveedores = "SELECT id_proveedor FROM public.proveedor WHERE estado_proveedor = true";
+$query_proveedores = "SELECT id_proveedor, nombre_proveedor FROM public.proveedor WHERE estado_proveedor = true";
 $result_proveedores = pg_query($conn, $query_proveedores);
 
-$ids_proveedores = [];
+$proveedores = [];
 if ($result_proveedores) {
     while ($row = pg_fetch_assoc($result_proveedores)) {
-        $ids_proveedores[] = $row['id_proveedor'];
+        $proveedores[] = $row;
     }
 } else {
-    echo "Error al obtener los IDs de proveedores: " . pg_last_error($conn);
+    echo "Error al obtener los proveedores: " . pg_last_error($conn);
 }
 
 // Obtener el proveedor actual del producto
@@ -88,6 +88,7 @@ $establecimiento_actual = pg_fetch_result($result_establecimiento_actual, 0, 'co
 pg_close($conn);
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -106,8 +107,8 @@ pg_close($conn);
             <label for="id_proveedor">Proveedor</label>
             <select id="id_proveedor" name="id_proveedor" required>
                 <option value="">Selecciona un proveedor</option>
-                <?php foreach ($ids_proveedores as $id_proveedor): ?>
-                    <option value="<?php echo htmlspecialchars($id_proveedor); ?>" <?php echo $id_proveedor == $proveedor_actual ? 'selected' : ''; ?>><?php echo htmlspecialchars($id_proveedor); ?></option>
+                <?php foreach ($proveedores as $proveedor): ?>
+                    <option value="<?php echo htmlspecialchars($proveedor['id_proveedor']); ?>" <?php echo $proveedor['id_proveedor'] == $proveedor_actual ? 'selected' : ''; ?>><?php echo htmlspecialchars($proveedor['nombre_proveedor']); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -164,7 +165,7 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="iva">IVA</label>
-            <input type="number" id="iva" name="iva" value="19" readonly>
+            <input type="number" id="iva" name="iva" value="0.19" step="0.01" readonly>
         </div>
 
         <div class="form-group">
@@ -186,6 +187,7 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
 
 
 

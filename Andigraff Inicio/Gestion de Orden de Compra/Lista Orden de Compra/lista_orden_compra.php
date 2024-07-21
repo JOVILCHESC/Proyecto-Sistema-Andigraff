@@ -10,6 +10,64 @@
     <link rel="stylesheet" href="../styles/ver_orden_compra.css">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions a {
+            color: black;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+
+        .actions a:hover {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
     <h1>Lista de Órdenes de Compra</h1>
@@ -77,7 +135,6 @@
                     <td>{$order['fecha_promesa']}</td>
                     <td>{$order['fecha_compra']}</td>
                     <td class='actions'>
-                        <a href='ver_orden_compra.php?id={$order['num_orden_compra']}' title='Ver'><i class='fas fa-eye'></i></a>
                         <a href='../Actualizar Orden de Compra/actualizar_orden_compra_form.php?id={$order['num_orden_compra']}' title='Editar'><i class='fas fa-edit'></i></a>
                         <a href='../Eliminar Orden de Compra/eliminar_orden_compra.php?id={$order['num_orden_compra']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta orden?\");'><i class='fas fa-trash'></i></a>
                     </td>
@@ -91,6 +148,7 @@
     // Cerrar la conexión
     pg_close($conn);
     ?>
+    <a href="../../sidebar/sidebar.html" class="button">Regresar al Inicio</a>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- DataTables JS -->
@@ -102,8 +160,5 @@
     </script>
 </body>
 </html>
-
-
-
 
 

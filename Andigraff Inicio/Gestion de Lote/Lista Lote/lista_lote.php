@@ -6,20 +6,7 @@
     <title>Lista de Lotes</title>
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Estilo básico para los iconos de los botones */
-        .actions {
-            text-align: center;
-        }
-        .actions a {
-            color: black;
-            margin: 0 5px;
-            text-decoration: none;
-        }
-        .actions a:hover {
-            color: #007bff;
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/ver_lotes.css">
 </head>
 <body>
     <h1>Lista de Lotes</h1>
@@ -36,8 +23,9 @@
         die("Error en la conexión: " . pg_last_error());
     }
 
-    // Preparar y ejecutar la consulta para obtener los lotes
-    $query = "SELECT numero_lote, precio_total, peso_total, cantidad_inicial, cantidad_actual, tipo_embalaje FROM lote";
+    // Preparar y ejecutar la consulta para obtener los lotes activos
+    $query = "SELECT numero_lote, precio_total, peso_total, cantidad_inicial, cantidad_actual, tipo_embalaje 
+              FROM lote WHERE estado_lote = TRUE";
     $result = pg_query($conn, $query);
 
     // Verificar resultado
@@ -71,7 +59,6 @@
                 <td>{$row['cantidad_actual']}</td>
                 <td>{$row['tipo_embalaje']}</td>
                 <td class='actions'>
-                    <a href='ver_lote.php?id={$row['numero_lote']}' title='Ver'><i class='fas fa-eye'></i></a>
                     <a href='../Actualizar Lote/actualizar_lote_form.php?id={$row['numero_lote']}' title='Editar'><i class='fas fa-edit'></i></a>
                     <a href='../Eliminar Lote/eliminar_lote.php?id={$row['numero_lote']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este lote?\");'><i class='fas fa-trash'></i></a>
                 </td>
@@ -84,6 +71,10 @@
     // Cerrar la conexión
     pg_close($conn);
     ?>
+
+    <a href="../../sidebar/sidebar.html" class="button regresar">Regresar al Inicio</a>
+
 </body>
 </html>
+
 
