@@ -25,49 +25,31 @@
     <h1>Lista de Órdenes de Compra</h1>
     
     <?php
-    // PostgreSQL connection parameters
-    $host = "146.83.165.21";
-    $port = "5432";
-    $dbname = "jvilches"; // Replace with your actual database name
-    $user = "jvilches"; // Replace with your actual username
-    $password = "wEtbEQzH6v44"; // Replace with your actual password
+    // Incluir el archivo de configuración para obtener la conexión
+    require_once(__DIR__ . '/../../config/config.php');
 
-    // Create connection string
-    $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";
+    // Conectar a la base de datos
+    $conn = getDBConnection();
 
-    // Function to connect to the database
-    function getDBConnection() {
-        global $connectionString;
-        $connect = pg_connect($connectionString);
-
-        if (!$connect) {
-            die('Error al conectar a la base de datos');
-        }
-
-        return $connect;
+    // Verificar conexión
+    if (!$conn) {
+        die("Error en la conexión: " . pg_last_error());
     }
 
-    // Fetch data from the database
-    function fetchOrders() {
-        $connection = getDBConnection();
-        $query = 'SELECT num_orden_compra, id_proveedor, rut, tipo_comprobante, costo_total, descripcion_orden, cantidad_solicitada, fecha_requerida, estado_compra, fecha_promesa, fecha_compra FROM orden_compra';
-        $result = pg_query($connection, $query);
+    // Consultar las órdenes de compra que no están eliminadas (estado_compra = true)
+    $query = "SELECT num_orden_compra, id_proveedor, rut, tipo_comprobante, costo_total, descripcion_orden, cantidad_solicitada, fecha_requerida, estado_compra, fecha_promesa, fecha_compra FROM orden_compra WHERE estado_compra = true";
+    $result = pg_query($conn, $query);
 
-        if (!$result) {
-            echo "Error en la consulta.";
-            return [];
-        }
-
-        $orders = [];
-        while ($row = pg_fetch_assoc($result)) {
-            $orders[] = $row;
-        }
-
-        return $orders;
+    if (!$result) {
+        echo "Error en la consulta.";
+        return [];
     }
 
-    // Display the data
-    $orders = fetchOrders();
+    $orders = [];
+    while ($row = pg_fetch_assoc($result)) {
+        $orders[] = $row;
+    }
+
     if (empty($orders)) {
         echo "<p>No hay órdenes de compra disponibles.</p>";
     } else {
@@ -106,7 +88,7 @@
                     <td class='actions'>
                         <a href='ver_orden_compra.php?id={$order['num_orden_compra']}' title='Ver'><i class='fas fa-eye'></i></a>
                         <a href='../Actualizar Orden de Compra/actualizar_orden_compra_form.php?id={$order['num_orden_compra']}' title='Editar'><i class='fas fa-edit'></i></a>
-                        <a href='eliminar_orden_compra.php?id={$order['num_orden_compra']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta orden?\");'><i class='fas fa-trash'></i></a>
+                        <a href='../Eliminar Orden de Compra/eliminar_orden_compra.php?id={$order['num_orden_compra']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta orden?\");'><i class='fas fa-trash'></i></a>
                     </td>
                   </tr>";
         }
@@ -115,8 +97,9 @@
               </table>";
     }
 
-    // Close the connection
-    pg_close(getDBConnection());
+    // Cerrar la conexión
+    pg_close($conn);
     ?>
 </body>
 </html>
+

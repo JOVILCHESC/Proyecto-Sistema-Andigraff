@@ -5,6 +5,28 @@ if (!isset($_SESSION['rut'])) {
     exit();
 }
 $rut_usuario = $_SESSION['rut'];
+
+// Incluir el archivo de configuración para obtener la conexión
+require_once(__DIR__ . '/../../config/config.php');
+
+// Conectar a la base de datos
+$conn = getDBConnection();
+
+// Obtener los IDs de proveedores de la base de datos
+$query_proveedores = "SELECT id_proveedor, nombre_proveedor FROM public.proveedor";
+$result_proveedores = pg_query($conn, $query_proveedores);
+
+$proveedores = [];
+if ($result_proveedores) {
+    while ($row = pg_fetch_assoc($result_proveedores)) {
+        $proveedores[] = $row;
+    }
+} else {
+    echo "Error al obtener los proveedores: " . pg_last_error($conn);
+}
+
+// Cerrar la conexión
+pg_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -19,13 +41,13 @@ $rut_usuario = $_SESSION['rut'];
         <h2>Registro de Orden de Compra</h2>
         
         <div class="form-group">
-            <label for="num_orden_compra">Número de Orden de Compra</label>
-            <input type="text" id="num_orden_compra" name="num_orden_compra" required>
-        </div>
-        
-        <div class="form-group">
             <label for="id_proveedor">ID Proveedor</label>
-            <input type="text" id="id_proveedor" name="id_proveedor" required>
+            <select id="id_proveedor" name="id_proveedor" required>
+                <option value="">Selecciona un proveedor</option>
+                <?php foreach ($proveedores as $proveedor): ?>
+                    <option value="<?php echo htmlspecialchars($proveedor['id_proveedor']); ?>"><?php echo htmlspecialchars($proveedor['nombre_proveedor']); ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="form-group">
@@ -59,14 +81,6 @@ $rut_usuario = $_SESSION['rut'];
         </div>
 
         <div class="form-group">
-            <label for="estado_compra">Estado de Compra</label>
-            <select id="estado_compra" name="estado_compra">
-                <option value="true">Comprado</option>
-                <option value="false">No Comprado</option>
-            </select>
-        </div>
-
-        <div class="form-group">
             <label for="fecha_promesa">Fecha Promesa</label>
             <input type="date" id="fecha_promesa" name="fecha_promesa" required>
         </div>
@@ -80,4 +94,5 @@ $rut_usuario = $_SESSION['rut'];
     </form>
 </body>
 </html>
+
 
