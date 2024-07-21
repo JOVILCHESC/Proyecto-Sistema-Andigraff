@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['id'])) {
 
 $id = intval($_POST['id']);
 $id_proveedor = intval($_POST['id_proveedor']);
+$cod_establecimiento = intval($_POST['cod_establecimiento']);
 $numero_lote = $_POST['numero_lote'];
 $nombre_producto = $_POST['nombre_producto'];
 $precio_unitario = $_POST['precio_unitario'];
@@ -13,7 +14,7 @@ $stock = $_POST['stock'];
 $tamano = $_POST['tamano'];
 $tipo_producto = $_POST['tipo_producto'];
 $peso_unitario = $_POST['peso_unitario'];
-$iva = $_POST['iva'];
+$iva = 19; // Valor estático
 $descripcion_producto = $_POST['descripcion_producto'];
 $categoria = $_POST['categoria'];
 $stock_critico = $_POST['stock_critico'];
@@ -34,13 +35,19 @@ $params_producto = array($numero_lote, $nombre_producto, $precio_unitario, $stoc
 $result_producto = pg_query_params($conn, $sql_producto, $params_producto);
 
 if ($result_producto) {
-    // Preparar la consulta SQL de actualización en la tabla intermedia
+    // Preparar la consulta SQL de actualización en la tabla intermedia `provee`
     $sql_provee = 'UPDATE provee SET id_proveedor = $1 WHERE cod_producto = $2';
     $params_provee = array($id_proveedor, $id);
 
     $result_provee = pg_query_params($conn, $sql_provee, $params_provee);
 
-    if ($result_provee) {
+    // Preparar la consulta SQL de actualización en la tabla intermedia `almacena`
+    $sql_almacena = 'UPDATE almacena SET cod_establecimiento = $1 WHERE cod_producto = $2';
+    $params_almacena = array($cod_establecimiento, $id);
+
+    $result_almacena = pg_query_params($conn, $sql_almacena, $params_almacena);
+
+    if ($result_provee && $result_almacena) {
         // Confirmar la transacción
         pg_query($conn, "COMMIT");
         header('Location: ../Lista Productos/lista_producto.php'); // Redirigir a la vista de éxito

@@ -47,7 +47,7 @@ if ($result_lotes) {
 }
 
 // Obtener los IDs de proveedores
-$query_proveedores = "SELECT id_proveedor FROM public.proveedor";
+$query_proveedores = "SELECT id_proveedor FROM public.proveedor WHERE estado_proveedor = true";
 $result_proveedores = pg_query($conn, $query_proveedores);
 
 $ids_proveedores = [];
@@ -64,6 +64,25 @@ $query_proveedor_actual = "SELECT id_proveedor FROM public.provee WHERE cod_prod
 $result_proveedor_actual = pg_query_params($conn, $query_proveedor_actual, [$id]);
 
 $proveedor_actual = pg_fetch_result($result_proveedor_actual, 0, 'id_proveedor');
+
+// Obtener los establecimientos de la base de datos
+$query_establecimientos = "SELECT cod_establecimiento, nombre_establecimiento FROM public.bodega";
+$result_establecimientos = pg_query($conn, $query_establecimientos);
+
+$establecimientos = [];
+if ($result_establecimientos) {
+    while ($row = pg_fetch_assoc($result_establecimientos)) {
+        $establecimientos[] = $row;
+    }
+} else {
+    echo "Error al obtener los establecimientos: " . pg_last_error($conn);
+}
+
+// Obtener el establecimiento actual del producto
+$query_establecimiento_actual = "SELECT cod_establecimiento FROM public.almacena WHERE cod_producto = $1";
+$result_establecimiento_actual = pg_query_params($conn, $query_establecimiento_actual, [$id]);
+
+$establecimiento_actual = pg_fetch_result($result_establecimiento_actual, 0, 'cod_establecimiento');
 
 // Cerrar la conexión
 pg_close($conn);
@@ -104,6 +123,16 @@ pg_close($conn);
         </div>
 
         <div class="form-group">
+            <label for="cod_establecimiento">Establecimiento</label>
+            <select id="cod_establecimiento" name="cod_establecimiento" required>
+                <option value="">Selecciona un establecimiento</option>
+                <?php foreach ($establecimientos as $establecimiento): ?>
+                    <option value="<?php echo htmlspecialchars($establecimiento['cod_establecimiento']); ?>" <?php echo $establecimiento['cod_establecimiento'] == $establecimiento_actual ? 'selected' : ''; ?>><?php echo htmlspecialchars($establecimiento['nombre_establecimiento']); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="nombre_producto">Nombre del Producto</label>
             <input type="text" id="nombre_producto" name="nombre_producto" value="<?php echo htmlspecialchars($product['nombre_producto']); ?>" required>
         </div>
@@ -135,7 +164,7 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="iva">IVA</label>
-            <input type="number" step="0.01" id="iva" name="iva" value="<?php echo htmlspecialchars($product['iva']); ?>" required>
+            <input type="number" id="iva" name="iva" value="19" readonly>
         </div>
 
         <div class="form-group">
@@ -157,6 +186,8 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
+
 
 
 

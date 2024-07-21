@@ -43,6 +43,19 @@ if ($result_proveedores) {
     echo "Error al obtener los proveedores: " . pg_last_error($conn);
 }
 
+// Obtener los establecimientos de la base de datos
+$query_establecimientos = "SELECT cod_establecimiento, nombre_establecimiento FROM public.establecimiento";
+$result_establecimientos = pg_query($conn, $query_establecimientos);
+
+$establecimientos = [];
+if ($result_establecimientos) {
+    while ($row = pg_fetch_assoc($result_establecimientos)) {
+        $establecimientos[] = $row;
+    }
+} else {
+    echo "Error al obtener los establecimientos: " . pg_last_error($conn);
+}
+
 // Cerrar la conexión
 pg_close($conn);
 ?>
@@ -80,6 +93,16 @@ pg_close($conn);
         </div>
 
         <div class="form-group">
+            <label for="cod_establecimiento">Establecimiento</label>
+            <select id="cod_establecimiento" name="cod_establecimiento" required>
+                <option value="">Selecciona un establecimiento</option>
+                <?php foreach ($establecimientos as $establecimiento): ?>
+                    <option value="<?php echo htmlspecialchars($establecimiento['cod_establecimiento']); ?>"><?php echo htmlspecialchars($establecimiento['nombre_establecimiento']); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="nombre_producto">Nombre del Producto</label>
             <input type="text" id="nombre_producto" name="nombre_producto" required>
         </div>
@@ -111,7 +134,7 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="iva">IVA</label>
-            <input type="number" step="0.01" id="iva" name="iva" required>
+            <input type="number" id="iva" name="iva" value="19" readonly>
         </div>
 
         <div class="form-group">
@@ -136,4 +159,7 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
+
+
 
