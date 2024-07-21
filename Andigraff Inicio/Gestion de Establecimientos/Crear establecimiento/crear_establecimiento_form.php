@@ -10,8 +10,8 @@
         <label for="telefono">Teléfono:</label>
         <input type="text" id="telefono" name="telefono" required><br>
 
-        <label for="numero_establecimiento">Número Establecimiento:</label>
-        <input type="text" id="numero_establecimiento" name="numero_establecimiento" required><br>
+        <label for="numero_estableciimiento">Número Establecimiento:</label>
+        <input type="text" id="numero_estableciimiento" name="numero_estableciimiento" required><br>
 
         <label for="comuna_establecimiento">Comuna:</label>
         <input type="text" id="comuna_establecimiento" name="comuna_establecimiento" required><br>

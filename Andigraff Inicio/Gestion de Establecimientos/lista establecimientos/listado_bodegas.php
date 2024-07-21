@@ -1,3 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de bodegas</title>
+    <link rel="stylesheet" href="../styles/listado_sucursales.css"> 
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilo básico para los iconos de los botones */
+        .actions {
+            text-align: center;
+        }
+        .actions a {
+            color: black;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+        .actions a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
 <?php
 session_start();
 
@@ -52,10 +77,10 @@ if ($result) {
     echo "<form method='post' action=''>
             <label for='codigo_establecimiento'>Código Establecimiento:</label>
             <input type='text' id='codigo_establecimiento' name='codigo_establecimiento'>
-            <label for='comuna_bodega'>Comuna:</label>
-            <input type='text' id='comuna_bodega' name='comuna_bodega'>
-            <label for='nombre_bodega'>Nombre:</label>
-            <input type='text' id='nombre_bodega' name='nombre_bodega'>
+            <label for='comuna_establecimiento'>Comuna:</label>
+            <input type='text' id='comuna_establecimiento' name='comuna_establecimiento'>
+            <label for='nombre_establecimiento'>Nombre:</label>
+            <input type='text' id='nombre_establecimiento' name='nombre_establecimiento'>
             <label for='estado_bodega'>Estado:</label>
             <input type='text' id='estado_bodega' name='estado_bodega'>
             <label for='tipo_almacenamiento'>Tipo Almacenamiento:</label>
@@ -64,19 +89,23 @@ if ($result) {
           </form>";
 
     echo "<table border='1'>
-            <tr>
-                <th>Cod Establecimiento</th>
-                <th>Telefono</th>
-                <th>Numero Estableciimiento</th>
-                <th>Comuna</th>
-                <th>Calle</th>
-                <th>Ciudad</th>
-                <th>Nombre</th>
-                <th>Cant Empleados</th>
-                <th>Capacidad</th>
-                <th>Tipo Almacenamiento</th>
-                <th>Estado Bodega</th>
-            </tr>";
+            <thead>
+                <tr>
+                    <th>Cod Establecimiento</th>
+                    <th>Telefono</th>
+                    <th>Numero Estableciimiento</th>
+                    <th>Comuna</th>
+                    <th>Calle</th>
+                    <th>Ciudad</th>
+                    <th>Nombre</th>
+                    <th>Cant Empleados</th>
+                    <th>Capacidad</th>
+                    <th>Tipo Almacenamiento</th>
+                    <th>Estado Bodega</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>";
 
     while ($row = pg_fetch_assoc($result)) {
         $estado_bodega = $row['estado_bodega'] ? 'Sí' : 'No';
@@ -92,10 +121,16 @@ if ($result) {
                 <td>{$row['capacidad']}</td>
                 <td>{$row['tipo_almacenamiento']}</td>
                 <td>{$estado_bodega}</td>
+                <td class='actions'>
+                    <a href='ver_bodega.php?cod_establecimiento={$row['cod_establecimiento']}' title='Ver'><i class='fas fa-eye'></i></a>
+                    <a href='../actualizar establecimiento/update_bodega_form.php?cod_establecimiento={$row['cod_establecimiento']}' title='Actualizar'><i class='fas fa-edit'></i></a>
+                    <a href='../eliminar establecimiento/delete_bodega.php?cod_establecimiento={$row['cod_establecimiento']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta bodega?\");'><i class='fas fa-trash'></i></a>
+                </td>
             </tr>";
     }
 
-    echo "</table>";
+    echo "  </tbody>
+          </table>";
 } else {
     echo "Error al obtener los datos de bodegas: " . pg_last_error($conn);
 }
