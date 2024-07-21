@@ -29,7 +29,7 @@ $params = array($id);
 $result = pg_query_params($conn, $sql, $params);
 
 if ($result) {
-    header("Location: ../Lista Ordenes de Compra/lista_orden_compra.php"); // Redirigir a la lista de órdenes de compra
+    header("Location: ../Lista Orden de Compra/lista_orden_compra.php"); // Redirigir a la lista de órdenes de compra
     exit();
 } else {
     echo "Error al actualizar: " . pg_last_error($conn);
