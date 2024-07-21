@@ -6,20 +6,8 @@
     <title>Lista de Órdenes de Compra</title>
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Estilo básico para los iconos de los botones */
-        .actions {
-            text-align: center;
-        }
-        .actions a {
-            color: black;
-            margin: 0 5px;
-            text-decoration: none;
-        }
-        .actions a:hover {
-            color: #007bff;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/ver_orden_compra.css">
 </head>
 <body>
     <h1>Lista de Órdenes de Compra</h1>
@@ -37,7 +25,7 @@
     }
 
     // Consultar las órdenes de compra que no están eliminadas (estado_compra = true)
-    $query = "SELECT num_orden_compra, id_proveedor, rut, tipo_comprobante, costo_total, descripcion_orden, cantidad_solicitada, fecha_requerida, estado_compra, fecha_promesa, fecha_compra FROM orden_compra WHERE estado_compra = true";
+    $query = "SELECT num_orden_compra, id_proveedor, rut, tipo_comprobante, costo_total, descripcion_orden, cantidad_solicitada, fecha_requerida, fecha_promesa, fecha_compra FROM orden_compra WHERE estado_compra = true";
     $result = pg_query($conn, $query);
 
     if (!$result) {
@@ -53,7 +41,7 @@
     if (empty($orders)) {
         echo "<p>No hay órdenes de compra disponibles.</p>";
     } else {
-        echo "<table border='1'>
+        echo "<table>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -64,7 +52,6 @@
                         <th>Descripción</th>
                         <th>Cantidad Solicitada</th>
                         <th>Fecha Requerida</th>
-                        <th>Estado</th>
                         <th>Fecha Promesa</th>
                         <th>Fecha Compra</th>
                         <th>Acciones</th>
@@ -82,7 +69,6 @@
                     <td>{$order['descripcion_orden']}</td>
                     <td>{$order['cantidad_solicitada']}</td>
                     <td>{$order['fecha_requerida']}</td>
-                    <td>" . ($order['estado_compra'] ? 'Comprado' : 'No Comprado') . "</td>
                     <td>{$order['fecha_promesa']}</td>
                     <td>{$order['fecha_compra']}</td>
                     <td class='actions'>
@@ -102,4 +88,7 @@
     ?>
 </body>
 </html>
+
+
+
 
