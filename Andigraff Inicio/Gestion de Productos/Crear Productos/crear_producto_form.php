@@ -134,7 +134,7 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="iva">IVA</label>
-            <input type="number" id="iva" name="iva" value="19" readonly>
+            <input type="number" id="iva" name="iva" value="0.19" step="0.01" readonly>
         </div>
 
         <div class="form-group">
@@ -159,6 +159,7 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
 
 
 

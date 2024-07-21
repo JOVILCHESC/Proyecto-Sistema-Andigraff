@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tamano = $_POST['tamano'];
     $tipo_producto = $_POST['tipo_producto'];
     $peso_unitario = $_POST['peso_unitario'];
-    $iva = 19;  // IVA siempre será 19
+    $iva = 0.19;  // IVA siempre será 0.19
     $descripcion_producto = $_POST['descripcion_producto'];
     $categoria = $_POST['categoria'];
     $stock_critico = $_POST['stock_critico'];
@@ -82,5 +82,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     pg_close($conn);
 }
 ?>
-
 
