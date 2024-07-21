@@ -115,12 +115,6 @@ if (!$result) {
         .actions .fas.fa-trash:hover {
             color: red;
         }
-        .actions .fas.fa-edit:hover {
-            color: orange;
-        }
-        .actions .fas.fa-eye:hover {
-            color: green;
-        }
         .filters {
             margin-bottom: 20px;
         }
@@ -174,8 +168,6 @@ if (!$result) {
                 echo "<td>" . htmlspecialchars($row['direccion_entrega_factura']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['rut']) . "</td>";
                 echo "<td class='actions'>
-                    <a href='ver_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Ver'><i class='fas fa-eye'></i></a>
-                    <a href='actualizar_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Editar'><i class='fas fa-edit'></i></a>
                     <a href='../Eliminar Facturas/eliminar_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta factura?\");'><i class='fas fa-trash'></i></a>
                     </td>";
                 echo "</tr>";
@@ -184,7 +176,8 @@ if (!$result) {
         </tbody>
     </table>
 
-    <a href="crear_factura_form.php" class="button">Crear Nueva Factura</a>
+    <a href="../crear Factura/crear_factura_form.php" class="button">Crear Nueva Factura</a>
+    <a href="../../sidebar/sidebar.html" class="button">Regresar al Inicio</a>
 
     <!-- Script para DataTables y filtros -->
     <script>
