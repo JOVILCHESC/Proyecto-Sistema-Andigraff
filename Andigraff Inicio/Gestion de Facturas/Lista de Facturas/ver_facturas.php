@@ -20,8 +20,32 @@ if (!$conn) {
     die("Error en la conexión a la base de datos");
 }
 
-// Consulta para obtener las facturas
-$query = "SELECT numero_factura, lugar_emision, fecha_emision_factura, descripcion_operacion_factura, direccion_entrega_factura, rut FROM factura";
+// Construir la consulta SQL base
+$query = "SELECT numero_factura, lugar_emision, fecha_emision_factura, descripcion_operacion_factura, direccion_entrega_factura, rut FROM factura WHERE estado_factura = TRUE";
+
+// Aplicar filtros si están presentes
+$filters = [];
+
+if (isset($_GET['filterNumeroFactura']) && !empty($_GET['filterNumeroFactura'])) {
+    $filterNumeroFactura = pg_escape_string($conn, $_GET['filterNumeroFactura']);
+    $filters[] = "numero_factura ILIKE '%$filterNumeroFactura%'";
+}
+
+if (isset($_GET['filterLugarEmision']) && !empty($_GET['filterLugarEmision'])) {
+    $filterLugarEmision = pg_escape_string($conn, $_GET['filterLugarEmision']);
+    $filters[] = "lugar_emision ILIKE '%$filterLugarEmision%'";
+}
+
+if (isset($_GET['filterFechaEmision']) && !empty($_GET['filterFechaEmision'])) {
+    $filterFechaEmision = pg_escape_string($conn, $_GET['filterFechaEmision']);
+    $filters[] = "fecha_emision_factura::date = '$filterFechaEmision'";
+}
+
+// Añadir filtros a la consulta
+if (!empty($filters)) {
+    $query .= " AND " . implode(" AND ", $filters);
+}
+
 $result = pg_query($conn, $query);
 
 if (!$result) {
@@ -44,22 +68,6 @@ if (!$result) {
     <link rel="stylesheet" href="../styles/ver_facturas.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#facturas').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json"
-                },
-                "paging": true,
-                "searching": true,
-                "info": true,
-                "lengthMenu": [10, 25, 50, 75, 100],
-                "columnDefs": [
-                    { "orderable": false, "targets": 6 }
-                ]
-            });
-        });
-    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -113,10 +121,36 @@ if (!$result) {
         .actions .fas.fa-eye:hover {
             color: green;
         }
+        .filters {
+            margin-bottom: 20px;
+        }
+        .filters label {
+            margin-right: 10px;
+        }
+        .filters input[type="text"] {
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
     <h2>Facturas Creadas</h2>
+    
+    <!-- Filtros -->
+    <div class="filters">
+        <form method="get" action="">
+            <label for="filterNumeroFactura">Filtrar por Número de Factura:</label>
+            <input type="text" id="filterNumeroFactura" name="filterNumeroFactura" value="<?php echo isset($_GET['filterNumeroFactura']) ? htmlspecialchars($_GET['filterNumeroFactura']) : ''; ?>">
+
+            <label for="filterLugarEmision">Filtrar por Lugar de Emisión:</label>
+            <input type="text" id="filterLugarEmision" name="filterLugarEmision" value="<?php echo isset($_GET['filterLugarEmision']) ? htmlspecialchars($_GET['filterLugarEmision']) : ''; ?>">
+
+            <label for="filterFechaEmision">Filtrar por Fecha de Emisión:</label>
+            <input type="date" id="filterFechaEmision" name="filterFechaEmision" value="<?php echo isset($_GET['filterFechaEmision']) ? htmlspecialchars($_GET['filterFechaEmision']) : ''; ?>">
+
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
+
     <table id="facturas" class="display">
         <thead>
             <tr>
@@ -142,7 +176,7 @@ if (!$result) {
                 echo "<td class='actions'>
                     <a href='ver_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Ver'><i class='fas fa-eye'></i></a>
                     <a href='actualizar_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Editar'><i class='fas fa-edit'></i></a>
-                    <a href='eliminar_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta factura?\");'><i class='fas fa-trash'></i></a>
+                    <a href='../Eliminar Facturas/eliminar_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta factura?\");'><i class='fas fa-trash'></i></a>
                     </td>";
                 echo "</tr>";
             }
@@ -151,6 +185,26 @@ if (!$result) {
     </table>
 
     <a href="crear_factura_form.php" class="button">Crear Nueva Factura</a>
+
+    <!-- Script para DataTables y filtros -->
+    <script>
+        $(document).ready(function() {
+            var table = $('#facturas').DataTable();
+
+            // Filtros personalizados
+            $('#filterNumeroFactura').on('keyup', function() {
+                table.column(0).search(this.value).draw(); // Filtra por número de factura
+            });
+
+            $('#filterLugarEmision').on('keyup', function() {
+                table.column(1).search(this.value).draw(); // Filtra por lugar de emisión
+            });
+
+            $('#filterFechaEmision').on('change', function() {
+                table.column(2).search(this.value).draw(); // Filtra por fecha de emisión
+            });
+        });
+    </script>
 </body>
 </html>
 
