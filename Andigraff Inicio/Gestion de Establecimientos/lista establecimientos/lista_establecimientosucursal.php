@@ -2,8 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Sucursales</title>
+    <link rel="stylesheet" href="../styles/listado_sucursales.css"> 
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilo básico para los iconos de los botones */
+        .actions {
+            text-align: center;
+        }
+        .actions a {
+            color: black;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+        .actions a:hover {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
 <?php
@@ -72,18 +89,21 @@ if ($result) {
           </form>";
 
     echo "<table border='1'>
-            <tr>
-                <th>Cod Establecimiento</th>
-                <th>Telefono</th>
-                <th>Numero Estableciimiento</th>
-                <th>Comuna</th>
-                <th>Calle</th>
-                <th>Ciudad</th>
-                <th>Nombre</th>
-                <th>Cant Empleados</th>
-                <th>Tipo Sucursal</th>
-                <th>Acciones</th>
-            </tr>";
+            <thead>
+                <tr>
+                    <th>Cod Establecimiento</th>
+                    <th>Telefono</th>
+                    <th>Numero Estableciimiento</th>
+                    <th>Comuna</th>
+                    <th>Calle</th>
+                    <th>Ciudad</th>
+                    <th>Nombre</th>
+                    <th>Cant Empleados</th>
+                    <th>Tipo Sucursal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>";
 
     while ($row = pg_fetch_assoc($result)) {
         echo "<tr>
@@ -96,20 +116,16 @@ if ($result) {
                 <td>{$row['nombre_establecimiento']}</td>
                 <td>{$row['cant_empleados']}</td>
                 <td>{$row['tipo_sucursal']}</td>
-                <td>
-                    <form method='post' action='update.php' style='display:inline-block;'>
-                        <input type='hidden' name='cod_establecimiento' value='{$row['cod_establecimiento']}'>
-                        <button type='submit'>Actualizar</button>
-                    </form>
-                    <form method='post' action='delete.php' style='display:inline-block;' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta sucursal?\");'>
-                        <input type='hidden' name='cod_establecimiento' value='{$row['cod_establecimiento']}'>
-                        <button type='submit'>Borrar</button>
-                    </form>
+                <td class='actions'>
+                    <a href='ver_sucursal.php?cod_establecimiento={$row['cod_establecimiento']}' title='Ver'><i class='fas fa-eye'></i></a>
+                    <a href='../actualizar establecimiento/update_sucursal_form.php?cod_establecimiento={$row['cod_establecimiento']}' title='Actualizar'><i class='fas fa-edit'></i></a>
+                    <a href='../eliminar establecimiento/delete_sucursal.php?cod_establecimiento={$row['cod_establecimiento']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta sucursal?\");'><i class='fas fa-trash'></i></a>
                 </td>
             </tr>";
     }
 
-    echo "</table>";
+    echo "  </tbody>
+          </table>";
 } else {
     echo "Error al obtener los datos de sucursales: " . pg_last_error($conn);
 }
