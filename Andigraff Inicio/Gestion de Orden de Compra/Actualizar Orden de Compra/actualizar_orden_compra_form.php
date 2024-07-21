@@ -23,12 +23,52 @@ function fetchOrderById($id) {
     return pg_fetch_assoc($result);
 }
 
+// Function to fetch the provider name by ID
+function fetchProviderNameById($id) {
+    $connection = getDBConnection();
+    $query = 'SELECT nombre_proveedor FROM proveedor WHERE id_proveedor = $1';
+    $result = pg_query_params($connection, $query, [$id]);
+
+    if (!$result) {
+        echo "Error en la consulta de proveedor.";
+        return null;
+    }
+
+    $row = pg_fetch_assoc($result);
+    return $row ? $row['nombre_proveedor'] : null;
+}
+
 // Fetch order data
 $order = fetchOrderById($id);
 
 if (!$order) {
     die('Orden de compra no encontrada.');
 }
+
+// Fetch the provider name
+$providerName = fetchProviderNameById($order['id_proveedor']);
+
+// Fetch associated products
+function fetchOrderProducts($id) {
+    $connection = getDBConnection();
+    $query = 'SELECT p.cod_producto, p.nombre_producto FROM producto p INNER JOIN tiene3 t ON p.cod_producto = t.cod_producto WHERE t.num_orden_compra = $1';
+    $result = pg_query_params($connection, $query, [$id]);
+
+    if (!$result) {
+        echo "Error en la consulta de productos.";
+        return [];
+    }
+
+    $products = [];
+    while ($row = pg_fetch_assoc($result)) {
+        $products[] = $row;
+    }
+
+    return $products;
+}
+
+// Fetch order products
+$orderProducts = fetchOrderProducts($id);
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +86,9 @@ if (!$order) {
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($order['num_orden_compra']); ?>">
         
         <div class="form-group">
-            <label for="id_proveedor">ID Proveedor</label>
-            <input type="text" id="id_proveedor" name="id_proveedor" value="<?php echo htmlspecialchars($order['id_proveedor']); ?>" required>
+            <label for="nombre_proveedor">Proveedor</label>
+            <input type="text" id="nombre_proveedor" value="<?php echo htmlspecialchars($providerName); ?>" readonly>
+            <input type="hidden" name="id_proveedor" value="<?php echo htmlspecialchars($order['id_proveedor']); ?>">
         </div>
 
         <div class="form-group">
@@ -72,20 +113,12 @@ if (!$order) {
 
         <div class="form-group">
             <label for="cantidad_solicitada">Cantidad Solicitada</label>
-            <input type="number" id="cantidad_solicitada" name="cantidad_solicitada" value="<?php echo htmlspecialchars($order['cantidad_solicitada']); ?>" required>
+            <input type="number" id="cantidad_solicitada" name="cantidad_solicitada" value="<?php echo htmlspecialchars($order['cantidad_solicitada']); ?>" readonly>
         </div>
 
         <div class="form-group">
             <label for="fecha_requerida">Fecha Requerida</label>
             <input type="date" id="fecha_requerida" name="fecha_requerida" value="<?php echo htmlspecialchars($order['fecha_requerida']); ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="estado_compra">Estado de Compra</label>
-            <select id="estado_compra" name="estado_compra">
-                <option value="1" <?php echo $order['estado_compra'] ? 'selected' : ''; ?>>Comprado</option>
-                <option value="0" <?php echo !$order['estado_compra'] ? 'selected' : ''; ?>>No Comprado</option>
-            </select>
         </div>
 
         <div class="form-group">
@@ -97,8 +130,20 @@ if (!$order) {
             <label for="fecha_compra">Fecha de Compra</label>
             <input type="date" id="fecha_compra" name="fecha_compra" value="<?php echo htmlspecialchars($order['fecha_compra']); ?>" required>
         </div>
+
+        <h2>Productos</h2>
+        <div id="productosDiv">
+            <?php foreach ($orderProducts as $product): ?>
+                <div>
+                    <input type="hidden" name="productos[]" value="<?php echo htmlspecialchars($product['cod_producto']); ?>">
+                    <span><?php echo htmlspecialchars($product['nombre_producto']); ?></span>
+                </div>
+            <?php endforeach; ?>
+        </div>
         
         <input type="submit" value="Actualizar">
     </form>
 </body>
 </html>
+
+
