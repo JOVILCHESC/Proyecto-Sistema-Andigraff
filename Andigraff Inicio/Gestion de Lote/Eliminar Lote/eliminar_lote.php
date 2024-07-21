@@ -21,8 +21,8 @@ if (!$conn) {
     die("Error en la conexión: " . pg_last_error());
 }
 
-// Preparar y ejecutar la consulta de eliminación
-$sql = "DELETE FROM lote WHERE numero_lote = $1";
+// Preparar y ejecutar la consulta de borrado lógico
+$sql = "UPDATE lote SET estado_lote = FALSE WHERE numero_lote = $1";
 $params = array($id);
 
 $result = pg_query_params($conn, $sql, $params);
@@ -36,4 +36,5 @@ if ($result) {
 
 // Cerrar la conexión
 pg_close($conn);
+
 ?>
