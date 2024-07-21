@@ -18,7 +18,7 @@ $tra_rut_usuario = $_SESSION['rut'];
 </head>
 <body>
     <h2>Registrar Cotización</h2>
-    <form action="registro_cotizacion.php" method="POST">
+    <form action="./crear_cotizacion.php" method="POST">
         <div class="form-group">
             <label for="cliente">Cliente:</label>
             <select id="cliente" name="rut">
@@ -38,10 +38,10 @@ $tra_rut_usuario = $_SESSION['rut'];
             <label for="monto_total">Monto Total:</label>
             <input type="number" id="monto_total" name="monto_total">
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="cantidad">Cantidad:</label>
             <input type="number" id="cantidad" name="cantidad">
-        </div>
+        </div> -->
         <div class="form-group">
             <label for="descripcion_cotizacion">Descripción de la Cotización:</label>
             <textarea id="descripcion_cotizacion" name="descripcion_cotizacion"></textarea>
@@ -70,7 +70,7 @@ $tra_rut_usuario = $_SESSION['rut'];
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('cargar_clientes.php')
+            fetch('./cargar_clientes.php')
                 .then(response => response.json())
                 .then(data => {
                     const clienteSelect = document.getElementById('cliente');
@@ -83,7 +83,7 @@ $tra_rut_usuario = $_SESSION['rut'];
                 })
                 .catch(error => console.error('Error al cargar clientes:', error));
 
-            fetch('cargar_productos.php')
+            fetch('./cargar_productos.php')
                 .then(response => response.json())
                 .then(data => {
                     const productosSelect = document.querySelectorAll('select[name="productos[]"]');

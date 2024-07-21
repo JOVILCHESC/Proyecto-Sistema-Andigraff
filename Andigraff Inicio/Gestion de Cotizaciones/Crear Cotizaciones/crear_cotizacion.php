@@ -27,27 +27,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tra_rut = $_POST['tra_rut'];
     $fecha_cotizacion = $_POST['fecha_cotizacion'];
     $monto_total = $_POST['monto_total'];
-    $cantidad = $_POST['cantidad'];
     $descripcion_cotizacion = $_POST['descripcion_cotizacion'];
     $estado_cotizacion = isset($_POST['estado_cotizacion']) ? 'true' : 'false';
     $productos = $_POST['productos'];
+    $cantidades = $_POST['cantidades'];
+
+    // Calcular la cantidad total de productos
+    $cantidad_total = array_sum($cantidades);
 
     // Iniciar transacción
     pg_query($conn, 'BEGIN');
 
     // Insertar cotización
     $query = "INSERT INTO cotizacion (rut, tra_rut, fecha_cotizacion, monto_total, cantidad, descripcion_cotizacion, estado_cotizacion) 
-              VALUES ('$rut', '$tra_rut', '$fecha_cotizacion', $monto_total, $cantidad, '$descripcion_cotizacion', $estado_cotizacion) RETURNING num_cotizacion";
-    $result = pg_query($conn, $query);
+              VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING num_cotizacion";
+    $result = pg_query_params($conn, $query, array($rut, $tra_rut, $fecha_cotizacion, $monto_total, $cantidad_total, $descripcion_cotizacion, $estado_cotizacion));
 
     if ($result) {
         $row = pg_fetch_assoc($result);
         $num_cotizacion = $row['num_cotizacion'];
 
         // Insertar productos en tiene2
-        foreach ($productos as $cod_producto) {
-            $queryProducto = "INSERT INTO tiene2 (cod_producto, num_cotizacion) VALUES ($cod_producto, $num_cotizacion)";
-            $resultProducto = pg_query($conn, $queryProducto);
+        foreach ($productos as $index => $cod_producto) {
+            $queryProducto = "INSERT INTO tiene2 (cod_producto, num_cotizacion) VALUES ($1, $2)";
+            $resultProducto = pg_query_params($conn, $queryProducto, array($cod_producto, $num_cotizacion));
             if (!$resultProducto) {
                 // Error en la inserción, deshacer transacción
                 pg_query($conn, 'ROLLBACK');
@@ -68,3 +71,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Cerrar la conexión
 pg_close($conn);
 ?>
+
