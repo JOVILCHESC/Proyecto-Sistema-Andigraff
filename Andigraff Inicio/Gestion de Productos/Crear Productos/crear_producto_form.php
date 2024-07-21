@@ -18,7 +18,7 @@ if (!$conn) {
 }
 
 // Obtener los números de lote de la base de datos
-$query = "SELECT DISTINCT numero_lote FROM public.lote";  // Asegúrate de que esta es la tabla correcta
+$query = "SELECT DISTINCT numero_lote FROM public.lote";
 $result = pg_query($conn, $query);
 
 $numeros_lote = [];
@@ -28,6 +28,19 @@ if ($result) {
     }
 } else {
     echo "Error al obtener los números de lote: " . pg_last_error($conn);
+}
+
+// Obtener los proveedores de la base de datos
+$query_proveedores = "SELECT id_proveedor, nombre_proveedor FROM public.proveedor WHERE estado_proveedor = true";
+$result_proveedores = pg_query($conn, $query_proveedores);
+
+$proveedores = [];
+if ($result_proveedores) {
+    while ($row = pg_fetch_assoc($result_proveedores)) {
+        $proveedores[] = $row;
+    }
+} else {
+    echo "Error al obtener los proveedores: " . pg_last_error($conn);
 }
 
 // Cerrar la conexión
@@ -52,6 +65,16 @@ pg_close($conn);
                 <option value="">Selecciona un lote</option>
                 <?php foreach ($numeros_lote as $numero_lote): ?>
                     <option value="<?php echo htmlspecialchars($numero_lote); ?>"><?php echo htmlspecialchars($numero_lote); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="id_proveedor">Proveedor</label>
+            <select id="id_proveedor" name="id_proveedor" required>
+                <option value="">Selecciona un proveedor</option>
+                <?php foreach ($proveedores as $proveedor): ?>
+                    <option value="<?php echo htmlspecialchars($proveedor['id_proveedor']); ?>"><?php echo htmlspecialchars($proveedor['nombre_proveedor']); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -113,3 +136,4 @@ pg_close($conn);
     </form>
 </body>
 </html>
+

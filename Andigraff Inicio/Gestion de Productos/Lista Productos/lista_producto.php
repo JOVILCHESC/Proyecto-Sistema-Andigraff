@@ -37,7 +37,13 @@
     }
 
     // Consultar los productos que no están eliminados (estado_producto = true)
-    $query = "SELECT cod_producto, numero_lote, nombre_producto, precio_unitario, stock, tamano, tipo_producto, peso_unitario, iva, descripcion_producto, categoria, stock_critico FROM producto WHERE estado_producto = true";
+    $query = "
+        SELECT p.cod_producto, p.numero_lote, p.nombre_producto, p.precio_unitario, p.stock, p.tamano, p.tipo_producto, p.peso_unitario, p.iva, p.descripcion_producto, p.categoria, p.stock_critico, pr.nombre_proveedor
+        FROM producto p
+        LEFT JOIN provee pv ON p.cod_producto = pv.cod_producto
+        LEFT JOIN proveedor pr ON pv.id_proveedor = pr.id_proveedor
+        WHERE p.estado_producto = true
+    ";
     $result = pg_query($conn, $query);
 
     if (!$result) {
@@ -68,6 +74,7 @@
                         <th>Descripción</th>
                         <th>Categoría</th>
                         <th>Stock Crítico</th>
+                        <th>Proveedor</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -87,10 +94,11 @@
                     <td>{$producto['descripcion_producto']}</td>
                     <td>{$producto['categoria']}</td>
                     <td>{$producto['stock_critico']}</td>
+                    <td>{$producto['nombre_proveedor']}</td>
                     <td class='actions'>
-                        <a href='ver_producto.php?id={$producto['cod_producto']}' title='Ver'><i class='fas fa-eye'></i></a>
+                        <a href='../Ver Producto/ver_producto.php?id={$producto['cod_producto']}' title='Ver'><i class='fas fa-eye'></i></a>
                         <a href='../Actualizar Productos/actualizar_producto_form.php?id={$producto['cod_producto']}' title='Editar'><i class='fas fa-edit'></i></a>
-                        <a href='eliminar_producto.php?id={$producto['cod_producto']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este producto?\");'><i class='fas fa-trash'></i></a>
+                        <a href='../Eliminar Productos/eliminar_producto.php?id={$producto['cod_producto']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este producto?\");'><i class='fas fa-trash'></i></a>
                     </td>
                   </tr>";
         }
@@ -104,3 +112,5 @@
     ?>
 </body>
 </html>
+
+

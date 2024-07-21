@@ -46,6 +46,25 @@ if ($result_lotes) {
     echo "Error al obtener los números de lote: " . pg_last_error($conn);
 }
 
+// Obtener los IDs de proveedores
+$query_proveedores = "SELECT id_proveedor FROM public.proveedor";
+$result_proveedores = pg_query($conn, $query_proveedores);
+
+$ids_proveedores = [];
+if ($result_proveedores) {
+    while ($row = pg_fetch_assoc($result_proveedores)) {
+        $ids_proveedores[] = $row['id_proveedor'];
+    }
+} else {
+    echo "Error al obtener los IDs de proveedores: " . pg_last_error($conn);
+}
+
+// Obtener el proveedor actual del producto
+$query_proveedor_actual = "SELECT id_proveedor FROM public.provee WHERE cod_producto = $1";
+$result_proveedor_actual = pg_query_params($conn, $query_proveedor_actual, [$id]);
+
+$proveedor_actual = pg_fetch_result($result_proveedor_actual, 0, 'id_proveedor');
+
 // Cerrar la conexión
 pg_close($conn);
 ?>
@@ -63,6 +82,16 @@ pg_close($conn);
         <h2>Editar Producto</h2>
         
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($product['cod_producto']); ?>">
+
+        <div class="form-group">
+            <label for="id_proveedor">Proveedor</label>
+            <select id="id_proveedor" name="id_proveedor" required>
+                <option value="">Selecciona un proveedor</option>
+                <?php foreach ($ids_proveedores as $id_proveedor): ?>
+                    <option value="<?php echo htmlspecialchars($id_proveedor); ?>" <?php echo $id_proveedor == $proveedor_actual ? 'selected' : ''; ?>><?php echo htmlspecialchars($id_proveedor); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
         
         <div class="form-group">
             <label for="numero_lote">Número de Lote</label>
@@ -128,3 +157,7 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
+
+
+

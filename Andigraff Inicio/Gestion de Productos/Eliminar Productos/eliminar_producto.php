@@ -8,7 +8,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 // Obtener el ID del producto a eliminar
-$id = intval($_GET['id']); // Sanitizar el ID
+$id = $_GET['id'];
 
 // Incluir el archivo de configuración para obtener la conexión
 require_once(__DIR__ . '/../../config/config.php');
@@ -23,16 +23,16 @@ if (!isset($_SESSION['rut'])) {
 }
 
 // Preparar y ejecutar la consulta de actualización para el borrado lógico
-$sql = 'UPDATE producto SET estado_producto = false WHERE cod_producto = $1';
+$sql = "UPDATE producto SET estado_producto = false WHERE cod_producto = $1";
 $params = array($id);
 
 $result = pg_query_params($conn, $sql, $params);
 
 if ($result) {
-    header('Location: ../Lista Productos/lista_producto.php'); // Redirigir a la lista de productos
+    header("Location: ../Lista Productos/lista_producto.php"); // Redirigir a la lista de productos
     exit();
 } else {
-    echo 'Error al actualizar: ' . pg_last_error($conn);
+    echo "Error al actualizar: " . pg_last_error($conn);
 }
 
 // Cerrar la conexión

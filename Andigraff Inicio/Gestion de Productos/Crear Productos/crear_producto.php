@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $numero_lote = $_POST['numero_lote'];
+    $id_proveedor = intval($_POST['id_proveedor']);
     $nombre_producto = $_POST['nombre_producto'];
     $precio_unitario = $_POST['precio_unitario'];
     $stock = $_POST['stock'];
@@ -25,20 +26,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Conectar a la base de datos
     $conn = getDBConnection();
 
-    // Preparar la consulta SQL
-    $sql = "INSERT INTO producto (numero_lote, nombre_producto, precio_unitario, stock, tamano, tipo_producto, peso_unitario, estado_producto, iva, descripcion_producto, categoria, stock_critico)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
+    // Iniciar la transacción
+    pg_query($conn, "BEGIN");
 
-    $params = array($numero_lote, $nombre_producto, $precio_unitario, $stock, $tamano, $tipo_producto, $peso_unitario, $estado_producto, $iva, $descripcion_producto, $categoria, $stock_critico);
+    // Preparar la consulta SQL para insertar el producto
+    $sql_producto = "INSERT INTO producto (numero_lote, nombre_producto, precio_unitario, stock, tamano, tipo_producto, peso_unitario, estado_producto, iva, descripcion_producto, categoria, stock_critico)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                     RETURNING cod_producto";
 
-    // Ejecutar la consulta
-    $result = pg_query_params($conn, $sql, $params);
-    
-    if ($result) {
-        header("Location: ../Lista Productos/lista_producto.php"); // Redirigir a la vista de éxito
-        exit();
+    $params_producto = array($numero_lote, $nombre_producto, $precio_unitario, $stock, $tamano, $tipo_producto, $peso_unitario, $estado_producto, $iva, $descripcion_producto, $categoria, $stock_critico);
+
+    $result_producto = pg_query_params($conn, $sql_producto, $params_producto);
+
+    if ($result_producto) {
+        $row = pg_fetch_assoc($result_producto);
+        $cod_producto = $row['cod_producto'];
+
+        // Preparar la consulta SQL para insertar en la tabla intermedia
+        $sql_provee = "INSERT INTO provee (id_proveedor, cod_producto) VALUES ($1, $2)";
+        $params_provee = array($id_proveedor, $cod_producto);
+
+        $result_provee = pg_query_params($conn, $sql_provee, $params_provee);
+
+        if ($result_provee) {
+            // Confirmar la transacción
+            pg_query($conn, "COMMIT");
+            header("Location: ../Lista Productos/lista_producto.php"); // Redirigir a la vista de éxito
+            exit();
+        } else {
+            // Revertir la transacción
+            pg_query($conn, "ROLLBACK");
+            echo "Error al registrar en la tabla intermedia: " . pg_last_error($conn);
+        }
     } else {
-        echo "Error al registrar: " . pg_last_error($conn);
+        // Revertir la transacción
+        pg_query($conn, "ROLLBACK");
+        echo "Error al registrar el producto: " . pg_last_error($conn);
     }
 
     // Cerrar la conexión
