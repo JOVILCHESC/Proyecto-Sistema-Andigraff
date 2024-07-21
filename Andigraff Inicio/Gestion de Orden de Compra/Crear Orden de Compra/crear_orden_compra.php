@@ -15,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha_requerida = $_POST['fecha_requerida'];
     $fecha_promesa = $_POST['fecha_promesa'];
     $fecha_compra = $_POST['fecha_compra'];
+    $productos = isset($_POST['productos']) ? $_POST['productos'] : [];
+    $cantidades = isset($_POST['cantidades']) ? $_POST['cantidades'] : [];
 
     // Incluir el archivo de configuración para obtener la conexión
     require_once(__DIR__ . '/../../config/config.php');
@@ -22,22 +24,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Conectar a la base de datos
     $conn = getDBConnection();
 
-    // Preparar la consulta SQL, omitiendo num_orden_compra y estado_compra
-    $sql = "INSERT INTO public.orden_compra (id_proveedor, rut, tipo_comprobante, costo_total, descripcion_orden, cantidad_solicitada, fecha_requerida, estado_compra, fecha_promesa, fecha_compra)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, 'true', $8, $9) RETURNING num_orden_compra";
+    // Iniciar una transacción
+    pg_query($conn, "BEGIN");
 
-    $params = array($id_proveedor, $rut, $tipo_comprobante, $costo_total, $descripcion_orden, $cantidad_solicitada, $fecha_requerida, $fecha_promesa, $fecha_compra);
+    // Preparar la consulta SQL para insertar en la tabla `orden_compra`
+    $sql_orden = "INSERT INTO public.orden_compra (id_proveedor, rut, tipo_comprobante, costo_total, descripcion_orden, cantidad_solicitada, fecha_requerida, estado_compra, fecha_promesa, fecha_compra)
+                  VALUES ($1, $2, $3, $4, $5, $6, $7, 'true', $8, $9) RETURNING num_orden_compra";
 
-    // Ejecutar la consulta
-    $result = pg_query_params($conn, $sql, $params);
+    $params_orden = array($id_proveedor, $rut, $tipo_comprobante, $costo_total, $descripcion_orden, $cantidad_solicitada, $fecha_requerida, $fecha_promesa, $fecha_compra);
+    $result_orden = pg_query_params($conn, $sql_orden, $params_orden);
 
-    if ($result) {
-        // Obtener el número de orden de compra generado automáticamente
-        $num_orden_compra = pg_fetch_result($result, 0, 'num_orden_compra');
-        header("Location: ../Lista Orden de Compra/lista_orden_compra.php?success=1&num_orden_compra=$num_orden_compra"); // Redirigir a la vista de éxito
-        exit();
+    if ($result_orden) {
+        $row = pg_fetch_assoc($result_orden);
+        $num_orden_compra = $row['num_orden_compra'];
+
+        // Preparar y ejecutar la consulta SQL para insertar en la tabla intermedia `tiene3`
+        $error = false;
+        foreach ($productos as $cod_producto) {
+            $sql_tiene3 = "INSERT INTO public.tiene3 (num_orden_compra, cod_producto) VALUES ($1, $2)";
+            $params_tiene3 = array($num_orden_compra, $cod_producto);
+
+            $result_tiene3 = pg_query_params($conn, $sql_tiene3, $params_tiene3);
+            if (!$result_tiene3) {
+                $error = true;
+                break;
+            }
+        }
+
+        if ($error) {
+            pg_query($conn, "ROLLBACK");
+            echo "Error al registrar los productos en la tabla intermedia: " . pg_last_error($conn);
+        } else {
+            pg_query($conn, "COMMIT");
+            header("Location: ../Lista Orden de Compra/lista_orden_compra.php?success=1&num_orden_compra=$num_orden_compra"); // Redirigir a la vista de éxito
+            exit();
+        }
     } else {
-        echo "Error al registrar: " . pg_last_error($conn);
+        pg_query($conn, "ROLLBACK");
+        echo "Error al registrar la orden de compra: " . pg_last_error($conn);
     }
 
     // Cerrar la conexión
