@@ -1,55 +1,55 @@
 <?php
+require_once(__DIR__ . '/../../config/config.php');
+
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verificar que el usuario esté autenticado
-    if (!isset($_SESSION['rut'])) {
-        header("Location: login.php");
-        exit();
-    }
+if (!isset($_SESSION['rut'])) {
+    header("Location: login.php");
+    exit();
+}
+$rut_usuario = $_SESSION['rut'];
 
-    $rut = $_SESSION['rut'];
-    $direccion_origen = $_POST['direccion_origen'];
-    $direccion_destino = $_POST['direccion_destino'];
-    $condicion_entrega = isset($_POST['condicion_entrega']) ? intval($_POST['condicion_entrega']) : null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener la conexión a la base de datos
+    $conn = getDBConnection();
 
-    // Ajustar estado_despacho a true por defecto si no se proporciona
-    $estado_despacho = isset($_POST['estado_despacho']) ? (bool) $_POST['estado_despacho'] : true;
-
+    // Recoger y sanitizar datos del formulario
+    $rut = $_POST['rut'];
+    $direccion_origen = pg_escape_string($_POST['direccion_origen']);
+    $direccion_destino = pg_escape_string($_POST['direccion_destino']);
+    $condicion_entrega = isset($_POST['condicion_entrega']) ? (bool)$_POST['condicion_entrega'] : false;
+    $estado_despacho = isset($_POST['estado_despacho']) ? (bool)$_POST['estado_despacho'] : false;
     $fecha_emicion_guia_despacho = $_POST['fecha_emicion_guia_despacho'];
+    $cod_establecimiento = (int)$_POST['cod_establecimiento'];
 
-    // Parámetros de conexión a PostgreSQL
-    $host = "146.83.165.21";
-    $port = "5432";
-    $dbname = "jvilches";
-    $user = "jvilches";
-    $password = "wEtbEQzH6v44";
+    // Iniciar transacción
+    pg_query($conn, 'BEGIN');
 
-    // Crear cadena de conexión
-    $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";
-
-    // Intentar conectar a la base de datos PostgreSQL
-    $conn = pg_connect($connectionString);
-
-    // Verificar si la conexión fue exitosa
-    if (!$conn) {
-        die('Error al conectar a la base de datos');
-    }
-
-    // Preparar la consulta SQL
-    $sql = "INSERT INTO public.guia_despacho (rut, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho)
-            VALUES ($1, $2, $3, $4, $5, $6)";
-
-    $params = array($rut, $direccion_origen, $direccion_destino, $condicion_entrega, $estado_despacho, $fecha_emicion_guia_despacho);
-
-    // Ejecutar la consulta
-    $result = pg_query_params($conn, $sql, $params);
+    // Insertar guía de despacho
+    $query = "INSERT INTO guia_despacho (rut, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho) 
+              VALUES ($1, $2, $3, $4, $5, $6) RETURNING num_guia_despacho";
+    $result = pg_query_params($conn, $query, array($rut, $direccion_origen, $direccion_destino, $condicion_entrega, $estado_despacho, $fecha_emicion_guia_despacho));
 
     if ($result) {
-        header("Location: ../Lista Guias de Despacho/lista_guia_despacho.php"); // Redirigir a la vista de éxito
-        exit();
+        $row = pg_fetch_assoc($result);
+        $num_guia_despacho = $row['num_guia_despacho'];
+
+        // Insertar en la tabla intermedia tiene5
+        $queryTiene5 = "INSERT INTO tiene5 (cod_establecimiento, num_guia_despacho) VALUES ($1, $2)";
+        $resultTiene5 = pg_query_params($conn, $queryTiene5, array($cod_establecimiento, $num_guia_despacho));
+        if (!$resultTiene5) {
+            // Error en la inserción, deshacer transacción
+            pg_query($conn, 'ROLLBACK');
+            die("Error al registrar la guía de despacho en la tabla intermedia: " . pg_last_error($conn));
+        }
+
+        // Confirmar transacción
+        pg_query($conn, 'COMMIT');
+        echo "Guía de despacho registrada exitosamente.";
     } else {
-        echo "Error al registrar: " . pg_last_error($conn);
+        // Error en la inserción, deshacer transacción
+        pg_query($conn, 'ROLLBACK');
+        echo "Error al registrar la guía de despacho: " . pg_last_error($conn);
     }
 
     // Cerrar la conexión

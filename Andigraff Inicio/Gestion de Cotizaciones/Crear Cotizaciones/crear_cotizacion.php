@@ -1,5 +1,7 @@
 <?php
+require_once(__DIR__ . '/../../config/config.php');
 session_start();
+
 if (!isset($_SESSION['rut'])) {
     header("Location: login.php");
     exit();
@@ -7,15 +9,8 @@ if (!isset($_SESSION['rut'])) {
 
 $tra_rut_usuario = $_SESSION['rut'];
 
-// Conectar a la base de datos
-$host = "146.83.165.21";
-$port = "5432";
-$dbname = "jvilches";
-$user = "jvilches";
-$password = "wEtbEQzH6v44";
-
-// Conectar a PostgreSQL
-$conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
+// Obtener la conexión a la base de datos
+$conn = getDBConnection();
 
 if (!$conn) {
     die("Error en la conexión a la base de datos");
@@ -71,4 +66,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Cerrar la conexión
 pg_close($conn);
 ?>
-
