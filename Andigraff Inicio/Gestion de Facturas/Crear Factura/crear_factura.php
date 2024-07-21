@@ -20,6 +20,14 @@ if (!$conn) {
     die("Error en la conexión a la base de datos");
 }
 
+// Función para generar una fecha aleatoria
+function generar_fecha_aleatoria($anio_inicio = 2000) {
+    $fecha_inicio = strtotime("01-01-$anio_inicio");
+    $fecha_fin = strtotime("now");
+    $fecha_aleatoria = mt_rand($fecha_inicio, $fecha_fin);
+    return date('Y-m-d', $fecha_aleatoria);
+}
+
 // Recoger datos del formulario
 $lugar_emision = pg_escape_string($conn, $_POST['lugar_emision']);
 $fecha_emision_factura = pg_escape_string($conn, $_POST['fecha_emision_factura']);
@@ -30,7 +38,8 @@ $tra_rut = pg_escape_string($conn, $_POST['tra_rut']);
 $total_venta = pg_escape_string($conn, $_POST['total_venta']);
 $hora_venta = pg_escape_string($conn, $_POST['hora_venta']);
 $sub_total = pg_escape_string($conn, $_POST['sub_total']);
-$estado_venta = pg_escape_string($conn, $_POST['estado_venta']);
+// Establecer el estado_venta como true directamente
+$estado_venta = true;
 $iva_venta = pg_escape_string($conn, $_POST['iva_venta']);
 
 // Insertar datos en la tabla factura
@@ -58,7 +67,7 @@ if ($result_factura) {
         for ($i = 0; $i < count($productos); $i++) {
             $cod_producto = pg_escape_string($conn, $productos[$i]);
             $cantidad_orden = pg_escape_string($conn, $cantidades[$i]);
-            $fecha = date('Y-m-d');
+            $fecha = generar_fecha_aleatoria(); // Fecha aleatoria desde el 2000
 
             $query_detalle_venta = "INSERT INTO detalle_venta (cod_producto, cod_venta, fecha, cantidad_orden) 
                                     VALUES ($1, $2, $3, $4)";
@@ -99,7 +108,6 @@ if ($result_factura) {
 } else {
     echo "Error al insertar la factura: " . pg_last_error($conn);
 }
-
 
 // Cerrar la conexión
 pg_close($conn);

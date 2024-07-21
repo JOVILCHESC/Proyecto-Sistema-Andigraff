@@ -52,11 +52,7 @@ $tra_rut_usuario = $_SESSION['rut'];
         <label for="sub_total">Sub Total:</label>
         <input type="number" id="sub_total" name="sub_total" step="0.01" required>
         
-        <label for="estado_venta">Estado de Venta:</label>
-        <select id="estado_venta" name="estado_venta">
-            <option value="true">Activo</option>
-            <option value="false">Inactivo</option>
-        </select>
+        <!-- Elimina el campo estado_venta -->
         
         <label for="iva_venta">IVA Venta:</label>
         <input type="number" id="iva_venta" name="iva_venta" step="0.01" value="0.19" required>
@@ -76,21 +72,18 @@ $tra_rut_usuario = $_SESSION['rut'];
         <button type="button" onclick="agregarProducto()">Agregar Producto</button>
 
         <h2>Métodos de Pago</h2>
-<div id="metodos_pago_contenedor">
-    <div class="metodo_pago">
-        <label for="metodo_pago">Método de Pago:</label>
-        <select name="metodos_pago[]">
-            <option value="">Seleccione un método de pago</option>
-            <!-- Las opciones de métodos de pago se cargarán aquí con JS -->
-        </select>
-        <label for="porcentaje_pago">Porcentaje:</label>
-        <input type="number" name="porcentajes_pago[]" step="0.01" min="0" max="100" required>
-    </div>
-</div>
-<button type="button" id="agregar_metodo_pago">Agregar Método de Pago</button>
-
-
-
+        <div id="metodos_pago_contenedor">
+            <div class="metodo_pago">
+                <label for="metodo_pago">Método de Pago:</label>
+                <select name="metodos_pago[]">
+                    <option value="">Seleccione un método de pago</option>
+                    <!-- Las opciones de métodos de pago se cargarán aquí con JS -->
+                </select>
+                <label for="porcentaje_pago">Porcentaje:</label>
+                <input type="number" name="porcentajes_pago[]" step="0.01" min="0" max="100" required>
+            </div>
+        </div>
+        <button type="button" id="agregar_metodo_pago">Agregar Método de Pago</button>
 
         <button type="submit">Registrar Factura y Venta</button>
     </form>
@@ -98,4 +91,3 @@ $tra_rut_usuario = $_SESSION['rut'];
     <script src="../js/crear_factura.js"></script>
 </body>
 </html>
-
