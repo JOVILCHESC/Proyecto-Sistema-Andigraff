@@ -40,7 +40,7 @@
         <tbody>
             <?php
             // PostgreSQL connection parameters
-            $host = "magallanes.inf.unap.cl";
+            $host = "146.83.165.21";
             $port = "5432";
             $dbname = "jvilches";
             $user = "jvilches";

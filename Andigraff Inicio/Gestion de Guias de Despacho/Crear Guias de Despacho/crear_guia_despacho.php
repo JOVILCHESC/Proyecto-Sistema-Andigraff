@@ -1,6 +1,8 @@
 <?php
 session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Verificar que el usuario esté autenticado
     if (!isset($_SESSION['rut'])) {
         header("Location: login.php");
         exit();
@@ -16,11 +18,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fecha_emicion_guia_despacho = $_POST['fecha_emicion_guia_despacho'];
 
-    // Incluir el archivo de configuración para obtener la conexión
-    require_once(__DIR__ . '/../../config/config.php');
+    // Parámetros de conexión a PostgreSQL
+    $host = "146.83.165.21";
+    $port = "5432";
+    $dbname = "jvilches";
+    $user = "jvilches";
+    $password = "wEtbEQzH6v44";
 
-    // Conectar a la base de datos
-    $conn = getDBConnection();
+    // Crear cadena de conexión
+    $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";
+
+    // Intentar conectar a la base de datos PostgreSQL
+    $conn = pg_connect($connectionString);
+
+    // Verificar si la conexión fue exitosa
+    if (!$conn) {
+        die('Error al conectar a la base de datos');
+    }
 
     // Preparar la consulta SQL
     $sql = "INSERT INTO public.guia_despacho (rut, direccion_origen, direccion_destino, condicion_entrega, estado_despacho, fecha_emicion_guia_despacho)
@@ -30,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la consulta
     $result = pg_query_params($conn, $sql, $params);
-    
+
     if ($result) {
         header("Location: ../Lista Guias de Despacho/lista_guia_despacho.php"); // Redirigir a la vista de éxito
         exit();

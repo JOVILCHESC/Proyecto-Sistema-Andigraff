@@ -21,28 +21,6 @@ if (!isset($_SESSION['rut'])) {
     exit();
 }
 
-// // Parámetros de conexión a PostgreSQL
-// $host = "magallanes.inf.unap.cl";
-// $port = "5432";
-// $dbname = "jvilches"; 
-// $user = "jvilches"; 
-// $password = "wEtbEQzH6v44"; 
-
-// // Crear cadena de conexión
-// $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";
-
-// // Función para conectar a la base de datos
-// function getDBConnection() {
-//     global $connectionString;
-//     $connect = pg_connect($connectionString);
-//     if (!$connect) {
-//         die('Error al conectar a la base de datos');
-//     }
-//     return $connect;
-// }
-
-// // Conectar a la base de datos
-// $conn = getDBConnection();
 
 // Preparar y ejecutar la consulta de actualización
 $sql = "UPDATE public.guia_despacho SET estado_despacho = false WHERE num_guia_despacho = $1";
