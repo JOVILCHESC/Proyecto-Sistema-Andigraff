@@ -2,9 +2,9 @@
 // PostgreSQL connection parameters
 $host = "146.83.165.21";
 $port = "5432";
-$dbname = "jvilches"; // Replace with your actual database name
-$user = "jvilches"; // Replace with your actual username
-$password = "wEtbEQzH6v44"; // Replace with your actual password
+$dbname = "bsilvestre"; // Replace with your actual database name
+$user = "bsilvestre"; // Replace with your actual username
+$password = "druIvAfaf4"; // Replace with your actual password
 
 // Create connection string
 $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";

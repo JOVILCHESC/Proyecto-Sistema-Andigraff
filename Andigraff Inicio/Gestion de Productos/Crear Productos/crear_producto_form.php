@@ -44,7 +44,7 @@ if ($result_proveedores) {
 }
 
 // Obtener los establecimientos de la base de datos
-$query_establecimientos = "SELECT cod_establecimiento, nombre_establecimiento FROM public.establecimiento";
+$query_establecimientos = "SELECT cod_establecimiento, nombre_establecimiento FROM public.bodega";
 $result_establecimientos = pg_query($conn, $query_establecimientos);
 
 $establecimientos = [];
