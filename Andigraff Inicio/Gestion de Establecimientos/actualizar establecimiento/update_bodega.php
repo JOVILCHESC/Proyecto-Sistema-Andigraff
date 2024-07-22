@@ -29,31 +29,23 @@ $estado_bodega = isset($_POST['estado_bodega']) ? 'true' : 'false';
 // Iniciar una transacción
 pg_query($conn, "BEGIN");
 
+// Preparar la consulta SQL de actualización para la tabla bodega
 $update_bodega_sql = "UPDATE bodega SET 
             capacidad = '$capacidad', 
             tipo_almacenamiento = '$tipo_almacenamiento', 
             estado_bodega = $estado_bodega 
         WHERE cod_establecimiento = '$cod_establecimiento'";
 
-$update_establecimiento_sql = "UPDATE establecimiento SET 
-            telefono = '$telefono', 
-            numero_estableciimiento = '$numero_estableciimiento', 
-            comuna_establecimiento = '$comuna_establecimiento',
-            calle_establecimiento = '$calle_establecimiento', 
-            ciudad_establecimiento = '$ciudad_establecimiento', 
-            nombre_establecimiento = '$nombre_establecimiento', 
-            cant_empleados = '$cant_empleados'
-        WHERE cod_establecimiento = '$cod_establecimiento'";
-
+// Ejecutar la consulta de actualización
 $update_bodega_result = pg_query($conn, $update_bodega_sql);
-$update_establecimiento_result = pg_query($conn, $update_establecimiento_sql);
 
-if ($update_bodega_result && $update_establecimiento_result) {
+// Verificar el resultado y hacer commit o rollback
+if ($update_bodega_result) {
     pg_query($conn, "COMMIT");
-    echo "<p>Bodega y Establecimiento actualizados correctamente. <a href='../lista establecimientos/listado_bodegas.php'>Volver al listado</a></p>";
+    echo "<p>Bodega actualizada correctamente. <a href='../lista establecimientos/listado_bodegas.php'>Volver al listado</a></p>";
 } else {
     pg_query($conn, "ROLLBACK");
-    echo "<p>Error al actualizar la bodega o establecimiento: " . pg_last_error($conn) . "</p>";
+    echo "<p>Error al actualizar la bodega: " . pg_last_error($conn) . "</p>";
 }
 
 // Cerrar la conexión a la base de datos
