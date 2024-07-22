@@ -10,9 +10,9 @@ $tra_rut_usuario = $_SESSION['rut'];
 // Conectar a la base de datos
 $host = "146.83.165.21";
 $port = "5432";
-$dbname = "jvilches";
-$user = "jvilches";
-$password = "wEtbEQzH6v44";
+$dbname = "bsilvestre";
+$user = "bsilvestre";
+$password = "druIvAfaf4";
 
 // Conectar a PostgreSQL
 $conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
