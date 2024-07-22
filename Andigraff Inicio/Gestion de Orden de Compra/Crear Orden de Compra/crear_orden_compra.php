@@ -6,17 +6,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $id_proveedor = $_POST['id_proveedor'];
+    $id_proveedor = $_POST['id_proveedor'] ?? null;
     $rut = $_SESSION['rut'];
-    $tipo_comprobante = $_POST['tipo_comprobante'];
-    $costo_total = $_POST['costo_total'];
-    $descripcion_orden = $_POST['descripcion_orden'];
-    $cantidad_solicitada = $_POST['cantidad_solicitada'];
-    $fecha_requerida = $_POST['fecha_requerida'];
-    $fecha_promesa = $_POST['fecha_promesa'];
-    $fecha_compra = $_POST['fecha_compra'];
+    $tipo_comprobante = $_POST['tipo_comprobante'] ?? null;
+    $costo_total = $_POST['costo_total'] ?? null;
+    $descripcion_orden = $_POST['descripcion_orden'] ?? null;
+    $fecha_requerida = $_POST['fecha_requerida'] ?? null;
+    $fecha_promesa = $_POST['fecha_promesa'] ?? null;
+    $fecha_compra = $_POST['fecha_compra'] ?? null;
     $productos = isset($_POST['productos']) ? $_POST['productos'] : [];
     $cantidades = isset($_POST['cantidades']) ? $_POST['cantidades'] : [];
+
+    // Calcular la cantidad solicitada como la suma de las cantidades de los productos
+    $cantidad_solicitada = array_sum($cantidades);
+
+    // Depuración: Imprimir las variables para verificar su contenido
+    // Puedes eliminar esta sección en producción
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
 
     // Incluir el archivo de configuración para obtener la conexión
     require_once(__DIR__ . '/../../config/config.php');
@@ -40,9 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Preparar y ejecutar la consulta SQL para insertar en la tabla intermedia `tiene3`
         $error = false;
-        foreach ($productos as $cod_producto) {
-            $sql_tiene3 = "INSERT INTO public.tiene3 (num_orden_compra, cod_producto) VALUES ($1, $2)";
-            $params_tiene3 = array($num_orden_compra, $cod_producto);
+        foreach ($productos as $index => $cod_producto) {
+            $cantidad = $cantidades[$index] ?? 0; // Asume una cantidad de 0 si no se especifica
+            $sql_tiene3 = "INSERT INTO public.tiene3 (num_orden_compra, cod_producto, cantidad) VALUES ($1, $2, $3)";
+            $params_tiene3 = array($num_orden_compra, $cod_producto, $cantidad);
 
             $result_tiene3 = pg_query_params($conn, $sql_tiene3, $params_tiene3);
             if (!$result_tiene3) {

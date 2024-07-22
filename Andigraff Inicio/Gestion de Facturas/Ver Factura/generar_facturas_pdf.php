@@ -45,86 +45,96 @@ if (isset($_GET['numero_factura'])) {
     pg_close($conn);
 
     class PDF extends FPDF {
+        private $numero_factura;
+
+        function __construct($numero_factura) {
+            parent::__construct();
+            $this->numero_factura = $numero_factura;
+        }
+
         function Header() {
             $this->SetFont('Arial', 'B', 12);
-            $this->Cell(0, 10, 'Factura', 0, 1, 'C');
+            $this->Cell(0, 10, utf8_decode('Factura Número: ' . $this->numero_factura), 0, 1, 'C');
             $this->Ln(10);
         }
 
         function ChapterTitle($title) {
             $this->SetFont('Arial', 'B', 12);
-            $this->Cell(0, 10, $title, 0, 1, 'L');
+            $this->Cell(0, 10, utf8_decode($title), 0, 1, 'L');
             $this->Ln(4);
         }
 
         function ChapterBody($body) {
             $this->SetFont('Arial', '', 12);
-            $this->MultiCell(0, 10, $body);
+            $this->MultiCell(0, 10, utf8_decode($body));
             $this->Ln();
         }
 
-        function ImprovedTable($header, $data) {
+        function Table($header, $data) {
             $this->SetFont('Arial', 'B', 12);
-            foreach ($header as $col) {
-                $this->Cell(40, 10, $col, 1);
+            $widths = array_fill(0, count($header), 60); // Set a fixed width for each column
+            foreach ($header as $i => $col) {
+                $this->Cell($widths[$i], 10, utf8_decode($col), 1);
             }
             $this->Ln();
 
             $this->SetFont('Arial', '', 12);
             foreach ($data as $row) {
-                foreach ($row as $col) {
-                    $this->Cell(40, 10, $col, 1);
+                foreach ($row as $i => $col) {
+                    $this->Cell($widths[$i], 10, utf8_decode($col), 1);
                 }
                 $this->Ln();
             }
         }
     }
 
-    $pdf = new PDF();
+    $pdf = new PDF($numero_factura);
     $pdf->AddPage();
 
     $pdf->ChapterTitle('Detalles de la Factura');
-    $pdf->ChapterBody(
-        "Lugar de Emisión: " . $factura['lugar_emision'] . "\n" .
-        "Fecha de Emisión: " . $factura['fecha_emision_factura'] . "\n" .
-        "Descripción: " . $factura['descripcion_operacion_factura'] . "\n" .
-        "Dirección de Entrega: " . $factura['direccion_entrega_factura'] . "\n" .
-        "RUT del Cliente: " . $factura['rut']
-    );
+    $factura_data = [
+        ['Lugar de Emisión', utf8_decode($factura['lugar_emision'])],
+        ['Fecha de Emisión', utf8_decode($factura['fecha_emision_factura'])],
+        ['Descripción', utf8_decode($factura['descripcion_operacion_factura'])],
+        ['Dirección de Entrega', utf8_decode($factura['direccion_entrega_factura'])],
+        ['RUT del Cliente', utf8_decode($factura['rut'])]
+    ];
+    $pdf->Table(['Campo', 'Valor'], $factura_data);
 
     $pdf->ChapterTitle('Detalles de la Venta');
-    $pdf->ChapterBody(
-        "RUT del Trabajador: " . $venta['tra_rut'] . "\n" .
-        "Total Venta: " . $venta['total_venta'] . "\n" .
-        "Hora de Venta: " . $venta['hora_venta'] . "\n" .
-        "Subtotal: " . $venta['sub_total'] . "\n" .
-        "Estado de Venta: " . ($venta['estado_venta'] ? 'Activa' : 'Inactiva') . "\n" .
-        "IVA Venta: " . $venta['iva_venta']
-    );
+    $venta_data = [
+        ['RUT del Trabajador', utf8_decode($venta['tra_rut'])],
+        ['Total Venta', utf8_decode($venta['total_venta'])],
+        ['Hora de Venta', utf8_decode($venta['hora_venta'])],
+        ['Subtotal', utf8_decode($venta['sub_total'])],
+        ['Estado de Venta', ($venta['estado_venta'] ? 'Activa' : 'Inactiva')],
+        ['IVA Venta', utf8_decode($venta['iva_venta'])]
+    ];
+    $pdf->Table(['Campo', 'Valor'], $venta_data);
 
     $pdf->ChapterTitle('Detalles de Productos');
     $header = ['Código del Producto', 'Cantidad Ordenada', 'Fecha'];
     $data = [];
     if ($detalles_venta) {
         foreach ($detalles_venta as $detalle) {
-            $data[] = [$detalle['cod_producto'], $detalle['cantidad_orden'], $detalle['fecha']];
+            $data[] = [utf8_decode($detalle['cod_producto']), utf8_decode($detalle['cantidad_orden']), utf8_decode($detalle['fecha'])];
         }
     } else {
         $data[] = ['No hay productos en esta venta.', '', ''];
     }
-    $pdf->ImprovedTable($header, $data);
+    $pdf->Table($header, $data);
 
     $pdf->ChapterTitle('Métodos de Pago');
     $header = ['ID del Método de Pago', 'Porcentaje de Pago'];
     $data = [];
     if ($metodos_pago) {
         foreach ($metodos_pago as $metodo) {
-            $data[] = [$metodo['id_metodo_pago'], $metodo['porcentaje_pago']];
+            $data[] = [utf8_decode($metodo['id_metodo_pago']), utf8_decode($metodo['porcentaje_pago'])];
         }
     } else {
         $data[] = ['No hay métodos de pago registrados.', ''];
     }
-    $pdf->ImprovedTable($header, $data);
+    $pdf->Table($header, $data);
 
     $pdf->Output();
 } else {

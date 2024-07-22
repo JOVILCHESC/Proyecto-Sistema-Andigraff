@@ -67,6 +67,25 @@
         .actions a:hover {
             color: #007bff;
         }
+        
+        .view-button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .view-button:hover {
+            background-color: #0056b3;
+        }
+
+        .fa-eye {
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -137,6 +156,7 @@
                     <td class='actions'>
                         <a href='../Actualizar Orden de Compra/actualizar_orden_compra_form.php?id={$order['num_orden_compra']}' title='Editar'><i class='fas fa-edit'></i></a>
                         <a href='../Eliminar Orden de Compra/eliminar_orden_compra.php?id={$order['num_orden_compra']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta orden?\");'><i class='fas fa-trash'></i></a>
+                        <a href='../Ver Orden de Compra/ver_orden_de_compra.php?num_orden_compra={$order['num_orden_compra']}' class='view-button' title='Ver Orden de Compra'><i class='fas fa-eye'></i></a>
                     </td>
                   </tr>";
         }
@@ -160,5 +180,3 @@
     </script>
 </body>
 </html>
-
-
