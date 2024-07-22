@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $params = array($cod_establecimiento, $telefono, $numero_estableciimiento, $comuna_establecimiento, $calle_establecimiento, $ciudad_establecimiento, $nombre_establecimiento, $cant_empleados);
 
     // Ejecutar la consulta con los parámetros
-    $result = pg_query_params($conn, $sql, $params);
+    $result = pg_query_params($conn, $sql, $params);    
 
     if ($result) { // Si la consulta fue exitosa
         if ($tipo === 'sucursal') {

@@ -17,9 +17,6 @@ $calle = pg_escape_string(getDBConnection(), $_POST['calle']);
 $ciudad = pg_escape_string(getDBConnection(), $_POST['ciudad']);
 $tipo = pg_escape_string(getDBConnection(), $_POST['tipo']);
 $cant_empleados = (int) $_POST['cant_empleados'];
-$capacidad = isset($_POST['capacidad']) ? pg_escape_string(getDBConnection(), $_POST['capacidad']) : '';
-$tipo_almacenamiento = isset($_POST['tipo_almacenamiento']) ? pg_escape_string(getDBConnection(), $_POST['tipo_almacenamiento']) : '';
-$estado_bodega = isset($_POST['estado_bodega']) ? 'true' : 'false';
 
 // Conectar a la base de datos
 $connection = getDBConnection();
@@ -44,35 +41,15 @@ $sucursal_params = array($nombre, $telefono, $numero, $comuna, $calle, $ciudad, 
 
 $update_sucursal_result = pg_query_params($connection, $update_sucursal_sql, $sucursal_params);
 
-if (!$update_sucursal_result) {
-    pg_query($connection, "ROLLBACK");
-    die("Error al actualizar los datos de sucursal: " . pg_last_error($connection));
-}
-
-// Preparar la consulta SQL de actualización para la tabla establecimiento
-$update_establecimiento_sql = "UPDATE establecimiento SET
-    telefono = $1,
-    numero_estableciimiento = $2,
-    comuna_establecimiento = $3,
-    calle_establecimiento = $4,
-    ciudad_establecimiento = $5,
-    nombre_establecimiento = $6,
-    cant_empleados = $7
-    WHERE cod_establecimiento = $8";
-
-// Parámetros para la consulta de la tabla establecimiento
-$establecimiento_params = array($telefono, $numero, $comuna, $calle, $ciudad, $nombre, $cant_empleados, $cod_establecimiento);
-
-$update_establecimiento_result = pg_query_params($connection, $update_establecimiento_sql, $establecimiento_params);
-
-if ($update_establecimiento_result) {
+if ($update_sucursal_result) {
     pg_query($connection, "COMMIT");
     header("Location: ../lista establecimientos/lista_establecimientosucursal.php");
     exit();
 } else {
     pg_query($connection, "ROLLBACK");
-    die("Error al actualizar los datos de establecimiento: " . pg_last_error($connection));
+    die("Error al actualizar los datos de sucursal: " . pg_last_error($connection));
 }
 
+// Cerrar la conexión a la base de datos
 pg_close($connection);
 ?>
