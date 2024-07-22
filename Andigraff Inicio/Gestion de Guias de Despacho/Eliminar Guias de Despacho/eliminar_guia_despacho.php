@@ -8,12 +8,13 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 // Obtener el ID de la guía de despacho a eliminar
-$id = $_GET['id'];
+$id = intval($_GET['id']); // Asegúrate de sanitizar el valor recibido
+
 // Incluir el archivo de configuración para obtener la conexión
 require_once(__DIR__ . '/../../config/config.php');
 
 // Conectar a la base de datos
-$conn = getDBConnection();
+$connection = getDBConnection();
 
 // Verificar sesión (si es necesario)
 if (!isset($_SESSION['rut'])) {
@@ -21,20 +22,20 @@ if (!isset($_SESSION['rut'])) {
     exit();
 }
 
-
 // Preparar y ejecutar la consulta de actualización
-$sql = "UPDATE public.guia_despacho SET estado_despacho = false WHERE num_guia_despacho = $1";
+$query = "UPDATE public.guia_despacho SET estado_despacho = false WHERE num_guia_despacho = $1";
 $params = array($id);
 
-$result = pg_query_params($conn, $sql, $params);
+$result = pg_query_params($connection, $query, $params);
 
 if ($result) {
-    header("Location: ../Lista Guias de Despacho/lista_guia_despacho.php"); // Redirigir a la lista de guías de despacho
+    // Redirigir a la lista de guías de despacho
+    header("Location: ../Lista Guias de Despacho/lista_guia_despacho.php");
     exit();
 } else {
-    echo "Error al actualizar: " . pg_last_error($conn);
+    echo "Error al actualizar: " . pg_last_error($connection);
 }
 
 // Cerrar la conexión
-pg_close($conn);
+pg_close($connection);
 ?>

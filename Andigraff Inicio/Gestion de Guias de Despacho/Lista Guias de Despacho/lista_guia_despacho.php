@@ -146,6 +146,7 @@
                             <td class='actions'>
                                 <a href='../Actualizar Guia de Despacho/actualizar_guia_despacho_form.php?id={$guide['num_guia_despacho']}' title='Editar'><i class='fas fa-edit'></i></a>
                                 <a href='../Eliminar Guias de Despacho/eliminar_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que quieres eliminar esta guía?\");'><i class='fas fa-trash'></i></a>
+                                <a href='../Ver Guia de Despacho/ver_guia_despacho.php?id={$guide['num_guia_despacho']}' title='Ver'><i class='fas fa-eye'></i></a>
                             </td>
                           </tr>";
                 }
@@ -171,4 +172,3 @@
     </script>
 </body>
 </html>
-

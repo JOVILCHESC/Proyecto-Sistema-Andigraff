@@ -1,33 +1,28 @@
 <?php
-// Include the database connection
-require_once(__DIR__ . '/../../config/config.php');
+require_once(__DIR__ . '/../../config/config.php'); // Asegúrate de que el archivo config.php tenga los detalles correctos de la base de datos
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $num_guia_despacho = intval($_POST['num_guia_despacho']);
+    $direccion_origen = $_POST['direccion_origen'];
+    $direccion_destino = $_POST['direccion_destino'];
+    $condicion_entrega = $_POST['condicion_entrega'] == '1' ? true : false;
+    $fecha_emicion_guia_despacho = $_POST['fecha_emicion_guia_despacho'];
 
-// Check if form data is provided
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['id'])) {
-    die('Datos del formulario no válidos.');
-}
+    $connection = getDBConnection();
 
-$id = intval($_POST['id']);
-$direccion_origen = $_POST['direccion_origen'];
-$direccion_destino = $_POST['direccion_destino'];
-$condicion_entrega = intval($_POST['condicion_entrega']);
-$estado_despacho = intval($_POST['estado_despacho']);
-$fecha_emicion_guia_despacho = $_POST['fecha_emicion_guia_despacho'];
+    $query = 'UPDATE guia_despacho 
+              SET direccion_origen = $1, direccion_destino = $2, condicion_entrega = $3, fecha_emicion_guia_despacho = $4 
+              WHERE num_guia_despacho = $5';
+    $result = pg_query_params($connection, $query, array($direccion_origen, $direccion_destino, $condicion_entrega, $fecha_emicion_guia_despacho, $num_guia_despacho));
 
-// Update query
-$update_query = 'UPDATE guia_despacho SET direccion_origen = $1, direccion_destino = $2, condicion_entrega = $3, estado_despacho = $4, fecha_emicion_guia_despacho = $5 WHERE num_guia_despacho = $6';
+    if ($result) {
+        echo "Guía de despacho actualizada exitosamente.";
+    } else {
+        echo "Error al actualizar la guía de despacho.";
+    }
 
-$connection = getDBConnection();
-$result = pg_query_params($connection, $update_query, [$direccion_origen, $direccion_destino, $condicion_entrega, $estado_despacho, $fecha_emicion_guia_despacho, $id]);
-
-if ($result) {
-    header("Location: ../Lista Guias de Despacho/lista_guia_despacho.php");
-    exit();
+    pg_close($connection);
 } else {
-    echo "Error al actualizar la guía de despacho.";
+    echo "Método no permitido.";
 }
-
-// Close the connection
-pg_close($connection);
 ?>
