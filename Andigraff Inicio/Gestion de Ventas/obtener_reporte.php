@@ -11,6 +11,8 @@ if (!$dbconn) {
 $reportType = isset($_GET['reportType']) ? $_GET['reportType'] : 'year';
 $year = isset($_GET['year']) ? $_GET['year'] : '';
 $month = isset($_GET['month']) ? $_GET['month'] : '';
+$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
+$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
 
 $query = "SELECT EXTRACT(YEAR FROM dv.fecha) AS año, 
                  p.nombre_producto, 
@@ -21,20 +23,26 @@ $query = "SELECT EXTRACT(YEAR FROM dv.fecha) AS año,
           JOIN public.producto p ON dv.cod_producto = p.cod_producto";
 
 if ($reportType == 'month' && $year && $month) {
-    $query .= " WHERE EXTRACT(YEAR FROM dv.fecha) = $1
-                AND EXTRACT(MONTH FROM dv.fecha) = $2";
+    // Calcula el primer y último día del mes
+    $startDate = "$year-$month-01";
+    $endDate = date("Y-m-t", strtotime($startDate));
+    $query .= " WHERE dv.fecha BETWEEN $1 AND $2";
 } elseif ($reportType == 'year' && $year) {
     $query .= " WHERE EXTRACT(YEAR FROM dv.fecha) = $1";
+} elseif ($reportType == 'range' && $startDate && $endDate) {
+    $query .= " WHERE dv.fecha BETWEEN $1 AND $2";
 }
 
 $query .= " GROUP BY año, p.nombre_producto, dv.cod_producto
             ORDER BY año, dv.cod_producto";
 
-// Ejecutar la consulta sin preparar la sentencia
+// Ejecutar la consulta
 if ($reportType == 'month' && $year && $month) {
-    $result = pg_query_params($dbconn, $query, array($year, $month));
+    $result = pg_query_params($dbconn, $query, array($startDate, $endDate));
 } elseif ($reportType == 'year' && $year) {
     $result = pg_query_params($dbconn, $query, array($year));
+} elseif ($reportType == 'range' && $startDate && $endDate) {
+    $result = pg_query_params($dbconn, $query, array($startDate, $endDate));
 } else {
     $result = pg_query($dbconn, $query);
 }
