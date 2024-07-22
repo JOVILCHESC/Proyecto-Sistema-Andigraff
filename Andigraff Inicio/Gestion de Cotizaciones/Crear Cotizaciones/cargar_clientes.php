@@ -1,12 +1,11 @@
 <?php
 header('Content-Type: application/json');
 
-// PostgreSQL connection parameters
 $host = "146.83.165.21";
 $port = "5432";
-$dbname = "jvilches";
-$user = "jvilches";
-$password = "wEtbEQzH6v44";
+$dbname = "bsilvestre"; // Replace with your actual database name
+$user = "bsilvestre"; // Replace with your actual username
+$password = "druIvAfaf4"; // Replace with your actual password
 
 // Create connection string
 $connectionString = "host=$host port=$port dbname=$dbname user=$user password=$password";

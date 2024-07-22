@@ -8,7 +8,7 @@ if (!$dbconn) {
 $year1 = isset($_GET['year1']) ? intval($_GET['year1']) : date('Y') - 1;
 $year2 = isset($_GET['year2']) ? intval($_GET['year2']) : date('Y');
 
-// Obtener datos de ventas para los años seleccionados y la proyección para 2023
+// Obtener datos de ventas para los años seleccionados y la proyección para 2024
 $query = "
     SELECT EXTRACT(YEAR FROM dv.fecha) AS año, 
            EXTRACT(MONTH FROM dv.fecha) AS mes,
@@ -31,14 +31,22 @@ while ($row = pg_fetch_assoc($result)) {
     $data[$row['año']][$row['mes']] = $row['total_vendido'];
 }
 
-// Proyección de ventas para 2024 
-$projection2023 = [
-    1 => 550000, 2 => 650000, 3 => 480000, 4 => 550000,
-    5 => 810000, 6 => 570000, 7 => 150000, 8 => 730000,
-    9 => 630000, 10 => 770000, 11 => 920000, 12 => 120000
-];
-
 pg_close($dbconn);
+
+// Calcular la proyección de ventas para 2024 utilizando la tasa de crecimiento
+$projection2023 = [];
+for ($mes = 1; $mes <= 12; $mes++) {
+    $ventasYear1 = isset($data[$year1][$mes]) ? $data[$year1][$mes] : 0;
+    $ventasYear2 = isset($data[$year2][$mes]) ? $data[$year2][$mes] : 0;
+    
+    if ($ventasYear1 > 0) {
+        $growthRate = ($ventasYear2 - $ventasYear1) / $ventasYear1;
+    } else {
+        $growthRate = 0;
+    }
+    
+    $projection2023[$mes] = $ventasYear2 + ($ventasYear2 * $growthRate);
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +74,7 @@ pg_close($dbconn);
     </style>
 </head>
 <body>
-    <h1>Reporte de ventas<br>"Andigraff"</h1>
+    <h1>Reporte de ventas<br>"Andigraf"</h1>
 
     <form method="GET" action="">
         <label for="year1">Seleccione el primer año:</label>
@@ -86,15 +94,16 @@ pg_close($dbconn);
             ?>
         </select>
         <button type="submit">Generar Reporte</button>
+        <button type="button" onclick="exportarPDF()">Exportar a PDF</button>
     </form>
 
     <table>
         <thead>
             <tr>
-                <th>MESES</th>
-                <th>VENTAS <?php echo $year1; ?></th>
-                <th>VENTAS <?php echo $year2; ?></th>
-                <th>PROYECCIÓN 2024</th>
+                <th>Mes</th>
+                <th>Ventas <?php echo $year1; ?></th>
+                <th>Ventas <?php echo $year2; ?></th>
+                <th>Proyección 2024</th>
             </tr>
         </thead>
         <tbody>
@@ -131,6 +140,11 @@ pg_close($dbconn);
             </tr>
         </tfoot>
     </table>
+
+    <script>
+        function exportarPDF() {
+            window.location.href = 'exportar_reporte_pdf.php?year1=<?php echo $year1; ?>&year2=<?php echo $year2; ?>';
+        }
+    </script>
 </body>
 </html>
-
