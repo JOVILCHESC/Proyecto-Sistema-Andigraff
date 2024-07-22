@@ -167,6 +167,7 @@ if (!$result) {
                 echo "<td>" . htmlspecialchars($row['direccion_entrega_factura']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['rut']) . "</td>";
                 echo "<td class='actions'>
+                    <a href='../Ver Factura/ver_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Ver'><i class='fas fa-eye'></i></a>
                     <a href='../Eliminar Facturas/eliminar_factura.php?numero_factura=" . htmlspecialchars($row['numero_factura']) . "' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta factura?\");'><i class='fas fa-trash'></i></a>
                     </td>";
                 echo "</tr>";
@@ -181,19 +182,43 @@ if (!$result) {
     <!-- Script para DataTables y filtros -->
     <script>
         $(document).ready(function() {
-            var table = $('#facturas').DataTable();
+            $('#facturas').DataTable({
+                "language": {
+                    "sEmptyTable": "No hay datos disponibles en la tabla",
+                    "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    "sInfoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                    "sInfoFiltered": "(filtrado de _MAX_ entradas totales)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "Mostrar _MENU_ entradas",
+                    "sLoadingRecords": "Cargando...",
+                    "sProcessing": "Procesando...",
+                    "sSearch": "Buscar:",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
 
             // Filtros personalizados
             $('#filterNumeroFactura').on('keyup', function() {
-                table.column(0).search(this.value).draw(); // Filtra por número de factura
+                $('#facturas').DataTable().column(0).search(this.value).draw(); // Filtra por número de factura
             });
 
             $('#filterLugarEmision').on('keyup', function() {
-                table.column(1).search(this.value).draw(); // Filtra por lugar de emisión
+                $('#facturas').DataTable().column(1).search(this.value).draw(); // Filtra por lugar de emisión
             });
 
             $('#filterFechaEmision').on('change', function() {
-                table.column(2).search(this.value).draw(); // Filtra por fecha de emisión
+                $('#facturas').DataTable().column(2).search(this.value).draw(); // Filtra por fecha de emisión
             });
         });
     </script>
@@ -201,9 +226,13 @@ if (!$result) {
 </html>
 
 <?php
-// Liberar el resultado
-pg_free_result($result);
+// Liberar el resultado si existe
+if (isset($result)) {
+    pg_free_result($result);
+}
 
-// Cerrar la conexión
-pg_close($conn);
+// Cerrar la conexión si existe
+if (isset($conn)) {
+    pg_close($conn);
+}
 ?>
