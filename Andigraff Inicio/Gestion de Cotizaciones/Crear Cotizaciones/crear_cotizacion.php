@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fecha_cotizacion = $_POST['fecha_cotizacion'];
     $monto_total = $_POST['monto_total'];
     $descripcion_cotizacion = $_POST['descripcion_cotizacion'];
-    $estado_cotizacion = isset($_POST['estado_cotizacion']) ? 'true' : 'false';
+    $estado_cotizacion = 'true'; // Estado de la cotización siempre será true
     $productos = $_POST['productos'];
     $cantidades = $_POST['cantidades'];
 

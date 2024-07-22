@@ -93,16 +93,14 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="estado_proveedor">Estado del Proveedor</label>
-            <select id="estado_proveedor" name="estado_proveedor" disabled>
-                <option value="true" <?php echo $proveedor['estado_proveedor'] ? 'selected' : ''; ?>>Activo</option>
-                <option value="false" <?php echo !$proveedor['estado_proveedor'] ? 'selected' : ''; ?>>Inactivo</option>
-            </select>
-            <input type="hidden" name="estado_proveedor" value="<?php echo htmlspecialchars($proveedor['estado_proveedor']); ?>">
+            <input type="text" id="estado_proveedor_mostrar" value="Activo" readonly>
         </div>
 
         <input type="submit" value="Actualizar">
     </form>
 </body>
 </html>
+
+
 
 

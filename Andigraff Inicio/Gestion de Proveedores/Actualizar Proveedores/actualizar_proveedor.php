@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo_postal = substr($_POST['codigo_postal'], 0, 255);
     $cod_pais = substr($_POST['cod_pais'], 0, 255);
     $nombre_proveedor = substr($_POST['nombre_proveedor'], 0, 255);
-    $estado_proveedor = $_POST['estado_proveedor'] === 'true';
+    $estado_proveedor = 'true'; // Siempre establecer en true
 
     // Incluir el archivo de configuración para obtener la conexión
     require_once(__DIR__ . '/../../config/config.php');
@@ -41,4 +41,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Cerrar la conexión
     pg_close($conn);
 }
-?>
