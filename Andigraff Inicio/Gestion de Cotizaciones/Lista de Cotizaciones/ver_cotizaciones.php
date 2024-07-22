@@ -21,7 +21,9 @@ if (!$conn) {
 }
 
 // Construir la consulta SQL base
-$query = "SELECT num_cotizacion, rut, tra_rut, fecha_cotizacion, monto_total, descripcion_cotizacion, estado_cotizacion FROM cotizacion";
+$query = "SELECT num_cotizacion, rut, tra_rut, fecha_cotizacion, monto_total, descripcion_cotizacion, estado_cotizacion 
+          FROM cotizacion 
+          WHERE estado_cotizacion = TRUE"; // Mostrar solo cotizaciones activas
 
 // Aplicar filtros si están presentes
 $filters = [];
@@ -43,7 +45,7 @@ if (isset($_GET['filterEstadoCotizacion']) && $_GET['filterEstadoCotizacion'] !=
 
 // Añadir filtros a la consulta
 if (!empty($filters)) {
-    $query .= " WHERE " . implode(" AND ", $filters);
+    $query .= " AND " . implode(" AND ", $filters);
 }
 
 $result = pg_query($conn, $query);
@@ -173,43 +175,23 @@ if (!$result) {
                 echo "<td>" . htmlspecialchars($row['fecha_cotizacion']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['monto_total']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['descripcion_cotizacion']) . "</td>";
-                echo "<td>" . ($row['estado_cotizacion'] ? 'Activo' : 'Inactivo') . "</td>";
-                echo "<td class='actions'>
-                    <a href='../Eliminar Cotizaciones/eliminar_cotizacion.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta cotización?\");'><i class='fas fa-trash'></i></a>
-                    </td>";
+                echo "<td>" . (htmlspecialchars($row['estado_cotizacion']) === 't' ? 'Activo' : 'Inactivo') . "</td>";
+                echo "<td class='actions'>";
+                echo "<a href='../Actualizar Cotizacion/actualizar_cotizacion_form.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-edit'></i></a>";
+                echo "<a href='../Eliminar Cotizaciones/eliminar_cotizaciones.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-trash'></i></a>";
+                echo "</td>";
                 echo "</tr>";
             }
+            pg_free_result($result);
+            pg_close($conn);
             ?>
         </tbody>
     </table>
 
-    <a href="../Crear Cotizaciones/crear_cotizacion_form.php" class="button">Registrar Nueva Cotización</a>
-    <a href="../../../sidebar/sidebar.html" class="button regresar">Regresar al Inicio</a>
-
-    <!-- Script para DataTables y filtros -->
     <script>
         $(document).ready(function() {
-            var table = $('#cotizaciones').DataTable();
-
-            // Filtros personalizados
-            $('#filterRutCliente').on('keyup', function() {
-                table.column(1).search(this.value).draw(); // Filtra por RUT del cliente
-            });
-
-            $('#filterFechaCotizacion').on('change', function() {
-                table.column(3).search(this.value).draw(); // Filtra por fecha de cotización
-            });
-
-            $('#filterEstadoCotizacion').on('change', function() {
-                table.column(6).search(this.value === 'true' ? 'Activo' : this.value === 'false' ? 'Inactivo' : '').draw(); // Filtra por estado
-            });
+            $('#cotizaciones').DataTable();
         });
     </script>
 </body>
 </html>
-
-<?php
-// Cerrar la conexión
-pg_close($conn);
-?>
-
