@@ -114,12 +114,6 @@ if (!$result) {
         .actions .fas.fa-trash:hover {
             color: red;
         }
-        .actions .fas.fa-edit:hover {
-            color: orange;
-        }
-        .actions .fas.fa-eye:hover {
-            color: green;
-        }
         .filters {
             margin-bottom: 20px;
         }
@@ -181,8 +175,6 @@ if (!$result) {
                 echo "<td>" . htmlspecialchars($row['descripcion_cotizacion']) . "</td>";
                 echo "<td>" . ($row['estado_cotizacion'] ? 'Activo' : 'Inactivo') . "</td>";
                 echo "<td class='actions'>
-                    <a href='ver_cotizacion.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "' title='Ver'><i class='fas fa-eye'></i></a>
-                    <a href='actualizar_cotizacion.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "' title='Editar'><i class='fas fa-edit'></i></a>
                     <a href='../Eliminar Cotizaciones/eliminar_cotizacion.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "' title='Eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar esta cotización?\");'><i class='fas fa-trash'></i></a>
                     </td>";
                 echo "</tr>";
@@ -191,7 +183,8 @@ if (!$result) {
         </tbody>
     </table>
 
-    <a href="crear_cotizacion.php" class="button">Registrar Nueva Cotización</a>
+    <a href="../Crear Cotizaciones/crear_cotizacion_form.php" class="button">Registrar Nueva Cotización</a>
+    <a href="../../../sidebar/sidebar.html" class="button regresar">Regresar al Inicio</a>
 
     <!-- Script para DataTables y filtros -->
     <script>
@@ -219,3 +212,4 @@ if (!$result) {
 // Cerrar la conexión
 pg_close($conn);
 ?>
+
