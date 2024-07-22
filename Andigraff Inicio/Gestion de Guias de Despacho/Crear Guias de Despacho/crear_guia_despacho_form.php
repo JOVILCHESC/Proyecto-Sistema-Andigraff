@@ -14,32 +14,79 @@ $rut_usuario = $_SESSION['rut'];
     <title>Registro de Guía de Despacho</title>
     <link rel="stylesheet" href="../styles/crear_guia_despacho.css">
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('./cargar_bodegas.php')  // Asegúrate de que la ruta es correcta
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data); // Verificar los datos en la consola
-            const selectBodega = document.getElementById('bodega');
-            if (data.error) {
-                console.error(data.error);
-                return;
-            }
-            data.forEach(bodega => {
-                const option = document.createElement('option');
-                option.value = bodega.cod_establecimiento;
-                option.textContent = bodega.nombre_establecimiento; // Asegúrate de usar 'nombre_establecimiento'
-                selectBodega.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error al cargar bodegas:', error));
-});
-</script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('./cargar_bodegas.php')
+                .then(response => response.json())
+                .then(data => {
+                    const selectBodega = document.getElementById('bodega');
+                    data.forEach(bodega => {
+                        const option = document.createElement('option');
+                        option.value = bodega.cod_establecimiento;
+                        option.textContent = bodega.nombre_establecimiento;
+                        selectBodega.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar bodegas:', error));
 
+            fetch('./cargar_productos.php')
+                .then(response => response.json())
+                .then(data => {
+                    const selectProducto = document.querySelector('select[name="productos[]"]');
+                    data.forEach(producto => {
+                        const option = document.createElement('option');
+                        option.value = producto.cod_producto;
+                        option.textContent = producto.nombre_producto;
+                        selectProducto.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar productos:', error));
+        });
+
+        function agregarProducto() {
+            const productosDiv = document.getElementById('productos');
+            const productoDiv = document.createElement('div');
+            productoDiv.className = 'producto';
+
+            const labelProducto = document.createElement('label');
+            labelProducto.textContent = 'Producto:';
+            productoDiv.appendChild(labelProducto);
+
+            const selectProducto = document.createElement('select');
+            selectProducto.setAttribute('name', 'productos[]');
+            const optionProducto = document.createElement('option');
+            optionProducto.value = '';
+            optionProducto.textContent = 'Seleccione un producto';
+            selectProducto.appendChild(optionProducto);
+            productoDiv.appendChild(selectProducto);
+
+            const labelCantidad = document.createElement('label');
+            labelCantidad.textContent = 'Cantidad:';
+            productoDiv.appendChild(labelCantidad);
+
+            const inputCantidad = document.createElement('input');
+            inputCantidad.setAttribute('type', 'number');
+            inputCantidad.setAttribute('name', 'cantidades[]');
+            inputCantidad.setAttribute('step', '1');
+            inputCantidad.setAttribute('min', '1');
+            inputCantidad.required = true;
+            productoDiv.appendChild(inputCantidad);
+
+            productosDiv.appendChild(productoDiv);
+
+            // Cargar opciones de productos en el nuevo select
+            fetch('./cargar_productos.php')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(producto => {
+                        const option = document.createElement('option');
+                        option.value = producto.cod_producto;
+                        option.textContent = producto.nombre_producto;
+                        selectProducto.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar productos:', error));
+        }
+    </script>
 </head>
 <body>
 
@@ -73,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <label for="bodega">Bodega</label>
         <select id="bodega" name="bodega">
             <option value="">Selecciona una bodega</option>
-            <!-- Options will be populated by JavaScript -->
         </select>
     </div>
 
@@ -81,11 +127,24 @@ document.addEventListener('DOMContentLoaded', function() {
         <label for="fecha_emicion_guia_despacho">Fecha de Emisión</label>
         <input type="date" id="fecha_emicion_guia_despacho" name="fecha_emicion_guia_despacho">
     </div>
-    
+
+    <h2>Productos</h2>
+    <div id="productos">
+        <div class="producto">
+            <label for="producto">Producto:</label>
+            <select name="productos[]">
+                <option value="">Seleccione un producto</option>
+            </select>
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidades[]" step="1" min="1" required>
+        </div>
+    </div>
+    <button type="button" onclick="agregarProducto()">Agregar Producto</button>
+
     <input type="submit" value="Registrar">
 </form>
 
-
 </body>
 </html>
+
 

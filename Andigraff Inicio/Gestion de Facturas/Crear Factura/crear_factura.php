@@ -20,10 +20,10 @@ if (!$conn) {
     die("Error en la conexión a la base de datos");
 }
 
-// Función para generar una fecha aleatoria
-function generar_fecha_aleatoria($anio_inicio = 2000) {
+// Función para generar una fecha aleatoria en el rango de 2021 a 2022
+function generar_fecha_aleatoria($anio_inicio = 2021, $anio_fin = 2022) {
     $fecha_inicio = strtotime("01-01-$anio_inicio");
-    $fecha_fin = strtotime("now");
+    $fecha_fin = strtotime("31-12-$anio_fin");
     $fecha_aleatoria = mt_rand($fecha_inicio, $fecha_fin);
     return date('Y-m-d', $fecha_aleatoria);
 }
@@ -67,7 +67,7 @@ if ($result_factura) {
         for ($i = 0; $i < count($productos); $i++) {
             $cod_producto = pg_escape_string($conn, $productos[$i]);
             $cantidad_orden = pg_escape_string($conn, $cantidades[$i]);
-            $fecha = generar_fecha_aleatoria(); // Fecha aleatoria desde el 2000
+            $fecha = generar_fecha_aleatoria(); // Fecha aleatoria entre 2021 y 2022
 
             $query_detalle_venta = "INSERT INTO detalle_venta (cod_producto, cod_venta, fecha, cantidad_orden) 
                                     VALUES ($1, $2, $3, $4)";
