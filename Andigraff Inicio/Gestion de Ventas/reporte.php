@@ -31,11 +31,11 @@ while ($row = pg_fetch_assoc($result)) {
     $data[$row['año']][$row['mes']] = $row['total_vendido'];
 }
 
-// Proyección de ventas para 2023 (puedes ajustar esto según tus criterios)
+// Proyección de ventas para 2024 
 $projection2023 = [
-    1 => 55000, 2 => 65000, 3 => 48000, 4 => 55000,
-    5 => 81000, 6 => 57000, 7 => 150000, 8 => 73000,
-    9 => 63000, 10 => 77000, 11 => 92000, 12 => 120000
+    1 => 550000, 2 => 650000, 3 => 480000, 4 => 550000,
+    5 => 810000, 6 => 570000, 7 => 150000, 8 => 730000,
+    9 => 630000, 10 => 770000, 11 => 920000, 12 => 120000
 ];
 
 pg_close($dbconn);
@@ -94,7 +94,7 @@ pg_close($dbconn);
                 <th>MESES</th>
                 <th>VENTAS <?php echo $year1; ?></th>
                 <th>VENTAS <?php echo $year2; ?></th>
-                <th>PROYECCIÓN 2023</th>
+                <th>PROYECCIÓN 2024</th>
             </tr>
         </thead>
         <tbody>
