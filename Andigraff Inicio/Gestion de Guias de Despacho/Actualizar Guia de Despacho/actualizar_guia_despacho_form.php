@@ -3,11 +3,11 @@
 require_once(__DIR__ . '/../../config/config.php');
 
 // Check if the num_guia_despacho is provided
-if (!isset($_GET['num_guia_despacho']) || empty($_GET['num_guia_despacho'])) {
+if (!isset($_GET['id']) || empty($_GET['id'])) {
     die('ID de guía de despacho no proporcionado.');
 }
 
-$num_guia_despacho = intval($_GET['num_guia_despacho']); // Sanitize the input
+$num_guia_despacho = intval($_GET['id']); // Sanitize the input
 
 // Function to fetch guide data by num_guia_despacho
 function fetchGuideById($num_guia_despacho) {
@@ -30,7 +30,6 @@ if (!$guide) {
     die('Guía de despacho no encontrada.');
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -58,11 +57,11 @@ if (!$guide) {
             <option value="0" <?php echo !$guide['condicion_entrega'] ? 'selected' : ''; ?>>No Entregado</option>
         </select>
     </div>
-    <div class="form-group" style="display:none;">
+    <div class="form-group">
         <label for="estado_despacho">Estado de Despacho</label>
         <select id="estado_despacho" name="estado_despacho">
-            <option value="1">Despachado</option>
-            <option value="0">No Despachado</option>
+            <option value="1" <?php echo $guide['estado_despacho'] ? 'selected' : ''; ?>>Despachado</option>
+            <option value="0" <?php echo !$guide['estado_despacho'] ? 'selected' : ''; ?>>No Despachado</option>
         </select>
     </div>
     <div class="form-group">
@@ -71,6 +70,5 @@ if (!$guide) {
     </div>
     <input type="submit" value="Actualizar">
 </form>
-
 </body>
 </html>
