@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Suministro</title>
-    <link rel="stylesheet" href="../styles/crear_suministro.css">
+    <link rel="stylesheet" href="styles/crear_suministro.css">
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Función para cargar las opciones de bodegas y sucursales
