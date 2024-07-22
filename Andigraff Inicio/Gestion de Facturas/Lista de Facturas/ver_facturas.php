@@ -227,18 +227,13 @@ if (!$result) {
 </html>
 
 <?php
-// Liberar el resultado
-pg_free_result($result);
+// Liberar el resultado si existe
+if (isset($result)) {
+    pg_free_result($result);
+}
 
-// Cerrar la conexión
-pg_close($conn);
-?>
-
-
-<?php
-// Liberar el resultado
-pg_free_result($result);
-
-// Cerrar la conexión
-pg_close($conn);
+// Cerrar la conexión si existe
+if (isset($conn)) {
+    pg_close($conn);
+}
 ?>

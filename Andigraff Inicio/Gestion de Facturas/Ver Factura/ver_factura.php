@@ -146,8 +146,8 @@ if (isset($_GET['numero_factura'])) {
             <?php } ?>
         </tbody>
     </table>
-
-    <a href="ver_facturas.php" class="button">Regresar a la lista de facturas</a>
+    <a href="../Ver Factura/generar_facturas_pdf.php?numero_factura=<?php echo urlencode($factura['numero_factura']); ?>" class="button">Generar PDF</a>
+    <a href="../Lista de Facturas/ver_facturas.php" class="button">Regresar a la lista de facturas</a>
 </body>
 </html>
 
