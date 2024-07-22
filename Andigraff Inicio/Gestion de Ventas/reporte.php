@@ -31,14 +31,22 @@ while ($row = pg_fetch_assoc($result)) {
     $data[$row['año']][$row['mes']] = $row['total_vendido'];
 }
 
-// Proyección de ventas para 2024
-$projection2023 = [
-    1 => 550000, 2 => 650000, 3 => 480000, 4 => 550000,
-    5 => 810000, 6 => 570000, 7 => 150000, 8 => 730000,
-    9 => 630000, 10 => 770000, 11 => 920000, 12 => 120000
-];
-
 pg_close($dbconn);
+
+// Calcular la proyección de ventas para 2024 utilizando la tasa de crecimiento
+$projection2023 = [];
+for ($mes = 1; $mes <= 12; $mes++) {
+    $ventasYear1 = isset($data[$year1][$mes]) ? $data[$year1][$mes] : 0;
+    $ventasYear2 = isset($data[$year2][$mes]) ? $data[$year2][$mes] : 0;
+    
+    if ($ventasYear1 > 0) {
+        $growthRate = ($ventasYear2 - $ventasYear1) / $ventasYear1;
+    } else {
+        $growthRate = 0;
+    }
+    
+    $projection2023[$mes] = $ventasYear2 + ($ventasYear2 * $growthRate);
+}
 ?>
 
 <!DOCTYPE html>
