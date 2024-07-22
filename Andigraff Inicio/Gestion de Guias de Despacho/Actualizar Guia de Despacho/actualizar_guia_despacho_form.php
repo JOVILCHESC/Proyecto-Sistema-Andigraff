@@ -41,36 +41,43 @@ if (!$guide) {
     <link rel="stylesheet" href="../styles/crear_guia_despacho.css">
 </head>
 <body>
-<form action="actualizar_guia_despacho_controlador.php" method="post">
-    <input type="hidden" name="num_guia_despacho" value="<?php echo htmlspecialchars($guide['num_guia_despacho']); ?>">
-    <div class="form-group">
-        <label for="direccion_origen">Dirección de Origen</label>
-        <input type="text" id="direccion_origen" name="direccion_origen" value="<?php echo htmlspecialchars($guide['direccion_origen']); ?>">
-    </div>
-    <div class="form-group">
-        <label for="direccion_destino">Dirección de Destino</label>
-        <input type="text" id="direccion_destino" name="direccion_destino" value="<?php echo htmlspecialchars($guide['direccion_destino']); ?>">
-    </div>
-    <div class="form-group">
-        <label for="condicion_entrega">Condición de Entrega</label>
-        <select id="condicion_entrega" name="condicion_entrega">
-            <option value="1" <?php echo $guide['condicion_entrega'] ? 'selected' : ''; ?>>Entregado</option>
-            <option value="0" <?php echo !$guide['condicion_entrega'] ? 'selected' : ''; ?>>No Entregado</option>
-        </select>
-    </div>
-    <div class="form-group" style="display:none;">
-        <label for="estado_despacho">Estado de Despacho</label>
-        <select id="estado_despacho" name="estado_despacho">
-            <option value="1">Despachado</option>
-            <option value="0">No Despachado</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="fecha_emicion_guia_despacho">Fecha de Emisión</label>
-        <input type="date" id="fecha_emicion_guia_despacho" name="fecha_emicion_guia_despacho" value="<?php echo htmlspecialchars($guide['fecha_emicion_guia_despacho']); ?>">
-    </div>
-    <input type="submit" value="Actualizar">
-</form>
-
+    <form action="actualizar_guia_despacho_controlador.php" method="post">
+        <h2>Editar Guía de Despacho</h2>
+        
+        <input type="hidden" name="num_guia_despacho" value="<?php echo htmlspecialchars($guide['num_guia_despacho']); ?>">
+        
+        <div class="form-group">
+            <label for="direccion_origen">Dirección de Origen</label>
+            <input type="text" id="direccion_origen" name="direccion_origen" value="<?php echo htmlspecialchars($guide['direccion_origen']); ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="direccion_destino">Dirección de Destino</label>
+            <input type="text" id="direccion_destino" name="direccion_destino" value="<?php echo htmlspecialchars($guide['direccion_destino']); ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="condicion_entrega">Condición de Entrega</label>
+            <select id="condicion_entrega" name="condicion_entrega">
+                <option value="1" <?php echo $guide['condicion_entrega'] ? 'selected' : ''; ?>>Entregado</option>
+                <option value="0" <?php echo !$guide['condicion_entrega'] ? 'selected' : ''; ?>>No Entregado</option>
+            </select>
+        </div>
+        
+        <div class="form-group" style="display:none;">
+            <label for="estado_despacho">Estado de Despacho</label>
+            <select id="estado_despacho" name="estado_despacho">
+                <option value="1">Despachado</option>
+                <option value="0">No Despachado</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="fecha_emicion_guia_despacho">Fecha de Emisión</label>
+            <input type="date" id="fecha_emicion_guia_despacho" name="fecha_emicion_guia_despacho" value="<?php echo htmlspecialchars($guide['fecha_emicion_guia_despacho']); ?>">
+        </div>
+        
+        <input type="submit" value="Actualizar">
+    </form>
 </body>
 </html>
