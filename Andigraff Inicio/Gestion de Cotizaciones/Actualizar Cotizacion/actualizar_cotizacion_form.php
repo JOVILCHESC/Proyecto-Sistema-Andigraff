@@ -120,10 +120,10 @@ pg_close($conn);
     <h2>Actualizar Cotización</h2>
     <form method="post" action="">
         <label for="rut">RUT del Cliente:</label>
-        <input type="text" id="rut" name="rut" value="<?php echo htmlspecialchars($cotizacion['rut']); ?>" required>
+        <input type="text" id="rut" name="rut" value="<?php echo htmlspecialchars($cotizacion['rut']); ?>" readonly>
 
         <label for="tra_rut">RUT del Trabajador:</label>
-        <input type="text" id="tra_rut" name="tra_rut" value="<?php echo htmlspecialchars($cotizacion['tra_rut']); ?>" required>
+        <input type="text" id="tra_rut" name="tra_rut" value="<?php echo htmlspecialchars($cotizacion['tra_rut']); ?>" readonly>
 
         <label for="fecha_cotizacion">Fecha de Cotización:</label>
         <input type="date" id="fecha_cotizacion" name="fecha_cotizacion" value="<?php echo htmlspecialchars($cotizacion['fecha_cotizacion']); ?>" required>
@@ -138,3 +138,4 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
