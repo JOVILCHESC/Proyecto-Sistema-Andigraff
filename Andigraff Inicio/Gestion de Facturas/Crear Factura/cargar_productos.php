@@ -24,7 +24,7 @@ function getDBConnection() {
 // Fetch data from the database
 function fetchProducts() {
     $connection = getDBConnection();
-    $query = 'SELECT cod_producto, nombre_producto FROM producto';
+    $query = 'SELECT cod_producto, nombre_producto FROM producto WHERE estado_producto = true';
     $result = pg_query($connection, $query);
     if (!$result) {
         echo json_encode(['error' => 'Error en la consulta']);
