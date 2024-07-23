@@ -13,6 +13,35 @@
 </head>
 <body>
     <h1>Lista de Productos</h1>
+
+    <div class="filter-container">
+        <label for="filter-category">Filtrar por Categoría:</label>
+        <select id="filter-category">
+            <option value="">Todas</option>
+            <option value="televisores">Televisores</option>
+            <option value="computadoras">Computadoras</option>
+            <option value="smartphones">Smartphones</option>
+            <option value="tablets">Tablets</option>
+            <option value="accesorios">Accesorios</option>
+            <option value="audio">Audio</option>
+            <option value="videojuegos">Videojuegos</option>
+            <option value="electrodomesticos">Electrodomésticos</option>
+            <option value="otros">Otros</option>
+        </select>
+
+        <label for="filter-type">Filtrar por Tipo:</label>
+        <select id="filter-type">
+            <option value="">Todos</option>
+            <option value="electrodomestico">Electrodoméstico</option>
+            <option value="control">Control</option>
+            <option value="accesorio">Accesorio</option>
+            <option value="hardware">Hardware</option>
+            <option value="software">Software</option>
+            <option value="cable">Cable</option>
+            <option value="bateria">Batería</option>
+            <option value="otro">Otro</option>
+        </select>
+    </div>
     
     <?php
     // Incluir el archivo de configuración para obtener la conexión
@@ -105,7 +134,27 @@
     <!-- Initialize DataTables -->
     <script>
         $(document).ready(function() {
-            $('#productosTable').DataTable();
+            var table = $('#productosTable').DataTable();
+
+            // Filtrar por categoría
+            $('#filter-category').on('change', function() {
+                var category = $(this).val();
+                if (category) {
+                    table.columns(8).search('^' + category + '$', true, false).draw();
+                } else {
+                    table.columns(8).search('').draw();
+                }
+            });
+
+            // Filtrar por tipo de producto
+            $('#filter-type').on('change', function() {
+                var type = $(this).val();
+                if (type) {
+                    table.columns(5).search('^' + type + '$', true, false).draw();
+                } else {
+                    table.columns(5).search('').draw();
+                }
+            });
         });
     </script>
 </body>

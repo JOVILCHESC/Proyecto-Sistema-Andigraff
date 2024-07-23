@@ -66,3 +66,4 @@ if ($result_producto) {
 // Cerrar la conexión
 pg_close($conn);
 ?>
+

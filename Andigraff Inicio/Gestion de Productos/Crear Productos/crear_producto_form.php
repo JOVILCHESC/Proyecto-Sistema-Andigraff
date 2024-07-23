@@ -124,7 +124,17 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="tipo_producto">Tipo de Producto</label>
-            <input type="text" id="tipo_producto" name="tipo_producto" required>
+            <select id="tipo_producto" name="tipo_producto" required>
+                <option value="">Selecciona un tipo</option>
+                <option value="electrodomestico">Electrodoméstico</option>
+                <option value="control">Control</option>
+                <option value="accesorio">Accesorio</option>
+                <option value="hardware">Hardware</option>
+                <option value="software">Software</option>
+                <option value="cable">Cable</option>
+                <option value="bateria">Batería</option>
+                <option value="otro">Otro</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -144,7 +154,17 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" required>
+            <select id="categoria" name="categoria" required>
+                <option value="">Selecciona una categoría</option>
+                <option value="televisores">Televisores</option>
+                <option value="computadoras">Computadoras</option>
+                <option value="smartphones">Smartphones</option>
+                <option value="tablets">Tablets</option>
+                <option value="accesorios">Accesorios</option>
+                <option value="audio">Audio</option>
+                <option value="videojuegos">Videojuegos</option>
+                <option value="otros">Otros</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -159,6 +179,8 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
+
 
 
 

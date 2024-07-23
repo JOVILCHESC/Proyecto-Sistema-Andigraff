@@ -155,7 +155,17 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="tipo_producto">Tipo de Producto</label>
-            <input type="text" id="tipo_producto" name="tipo_producto" value="<?php echo htmlspecialchars($product['tipo_producto']); ?>" required>
+            <select id="tipo_producto" name="tipo_producto" required>
+                <option value="">Selecciona un tipo</option>
+                <option value="electrodomestico" <?php echo $product['tipo_producto'] == 'electrodomestico' ? 'selected' : ''; ?>>Electrodoméstico</option>
+                <option value="control" <?php echo $product['tipo_producto'] == 'control' ? 'selected' : ''; ?>>Control</option>
+                <option value="accesorio" <?php echo $product['tipo_producto'] == 'accesorio' ? 'selected' : ''; ?>>Accesorio</option>
+                <option value="hardware" <?php echo $product['tipo_producto'] == 'hardware' ? 'selected' : ''; ?>>Hardware</option>
+                <option value="software" <?php echo $product['tipo_producto'] == 'software' ? 'selected' : ''; ?>>Software</option>
+                <option value="cable" <?php echo $product['tipo_producto'] == 'cable' ? 'selected' : ''; ?>>Cable</option>
+                <option value="bateria" <?php echo $product['tipo_producto'] == 'bateria' ? 'selected' : ''; ?>>Batería</option>
+                <option value="otro" <?php echo $product['tipo_producto'] == 'otro' ? 'selected' : ''; ?>>Otro</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -175,7 +185,18 @@ pg_close($conn);
 
         <div class="form-group">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" value="<?php echo htmlspecialchars($product['categoria']); ?>" required>
+            <select id="categoria" name="categoria" required>
+                <option value="">Selecciona una categoría</option>
+                <option value="televisores" <?php echo $product['categoria'] == 'televisores' ? 'selected' : ''; ?>>Televisores</option>
+                <option value="computadoras" <?php echo $product['categoria'] == 'computadoras' ? 'selected' : ''; ?>>Computadoras</option>
+                <option value="smartphones" <?php echo $product['categoria'] == 'smartphones' ? 'selected' : ''; ?>>Smartphones</option>
+                <option value="tablets" <?php echo $product['categoria'] == 'tablets' ? 'selected' : ''; ?>>Tablets</option>
+                <option value="accesorios" <?php echo $product['categoria'] == 'accesorios' ? 'selected' : ''; ?>>Accesorios</option>
+                <option value="audio" <?php echo $product['categoria'] == 'audio' ? 'selected' : ''; ?>>Audio</option>
+                <option value="videojuegos" <?php echo $product['categoria'] == 'videojuegos' ? 'selected' : ''; ?>>Videojuegos</option>
+                <option value="electrodomesticos" <?php echo $product['categoria'] == 'electrodomesticos' ? 'selected' : ''; ?>>Electrodomésticos</option>
+                <option value="otros" <?php echo $product['categoria'] == 'otros' ? 'selected' : ''; ?>>Otros</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -187,6 +208,7 @@ pg_close($conn);
     </form>
 </body>
 </html>
+
 
 
 
