@@ -162,6 +162,7 @@ if (!$result) {
                 <th>Descripción</th>
                 <th>Estado</th>
                 <th>Acciones</th>
+                <th>Ver</th> <!-- Nueva columna para ver cotización -->
             </tr>
         </thead>
         <tbody>
@@ -179,6 +180,7 @@ if (!$result) {
                 echo "<a href='../Actualizar Cotizacion/actualizar_cotizacion_form.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-edit'></i></a>";
                 echo "<a href='../Eliminar Cotizaciones/eliminar_cotizaciones.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-trash'></i></a>";
                 echo "</td>";
+                echo "<td><a href='../Ver Cotizacion/ver_cotizacion.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-eye'></i></a></td>"; // Enlace para ver cotización
                 echo "</tr>";
             }
             pg_free_result($result);
