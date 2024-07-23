@@ -55,6 +55,7 @@ if (!$result) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -66,8 +67,6 @@ if (!$result) {
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -147,7 +146,7 @@ if (!$result) {
                 <option value="false" <?php echo (isset($_GET['filterEstadoCotizacion']) && $_GET['filterEstadoCotizacion'] === 'false') ? 'selected' : ''; ?>>Inactivo</option>
             </select>
 
-            <button type="submit">Filtrar</button>
+            <button type="submit" class="button">Filtrar</button>
         </form>
     </div>
 
@@ -160,7 +159,7 @@ if (!$result) {
                 <th>Fecha de Cotización</th>
                 <th>Monto Total</th>
                 <th>Descripción</th>
-                <th>Estado</th>
+                
                 <th>Acciones</th>
                 <th>Ver</th> <!-- Nueva columna para ver cotización -->
             </tr>
@@ -175,7 +174,7 @@ if (!$result) {
                 echo "<td>" . htmlspecialchars($row['fecha_cotizacion']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['monto_total']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['descripcion_cotizacion']) . "</td>";
-                echo "<td>" . (htmlspecialchars($row['estado_cotizacion']) === 't' ? 'Activo' : 'Inactivo') . "</td>";
+                
                 echo "<td class='actions'>";
                 echo "<a href='../Actualizar Cotizacion/actualizar_cotizacion_form.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-edit'></i></a>";
                 echo "<a href='../Eliminar Cotizaciones/eliminar_cotizaciones.php?num_cotizacion=" . htmlspecialchars($row['num_cotizacion']) . "'><i class='fas fa-trash'></i></a>";
@@ -189,9 +188,14 @@ if (!$result) {
         </tbody>
     </table>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- Initialize DataTables -->
     <script>
         $(document).ready(function() {
-            $('#cotizaciones').DataTable();
+            var table = $('#cotizaciones').DataTable();
         });
     </script>
 </body>

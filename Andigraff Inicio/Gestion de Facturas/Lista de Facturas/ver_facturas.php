@@ -27,7 +27,7 @@ $filters = [];
 
 if (isset($_GET['filterNumeroFactura']) && !empty($_GET['filterNumeroFactura'])) {
     $filterNumeroFactura = pg_escape_string($conn, $_GET['filterNumeroFactura']);
-    $filters[] = "numero_factura ILIKE '%$filterNumeroFactura%'";
+    $filters[] = "CAST(numero_factura AS TEXT) ILIKE '%$filterNumeroFactura%'";
 }
 
 if (isset($_GET['filterLugarEmision']) && !empty($_GET['filterLugarEmision'])) {
@@ -120,7 +120,8 @@ if (!$result) {
         .filters label {
             margin-right: 10px;
         }
-        .filters input[type="text"] {
+        .filters input[type="text"],
+        .filters input[type="date"] {
             margin-right: 20px;
         }
     </style>
@@ -140,7 +141,7 @@ if (!$result) {
             <label for="filterFechaEmision">Filtrar por Fecha de Emisión:</label>
             <input type="date" id="filterFechaEmision" name="filterFechaEmision" value="<?php echo isset($_GET['filterFechaEmision']) ? htmlspecialchars($_GET['filterFechaEmision']) : ''; ?>">
 
-            <button type="submit">Filtrar</button>
+            <button type="submit" class="button">Filtrar</button>
         </form>
     </div>
 
@@ -207,19 +208,6 @@ if (!$result) {
                     }
                 }
             });
-
-            // Filtros personalizados
-            $('#filterNumeroFactura').on('keyup', function() {
-                $('#facturas').DataTable().column(0).search(this.value).draw(); // Filtra por número de factura
-            });
-
-            $('#filterLugarEmision').on('keyup', function() {
-                $('#facturas').DataTable().column(1).search(this.value).draw(); // Filtra por lugar de emisión
-            });
-
-            $('#filterFechaEmision').on('change', function() {
-                $('#facturas').DataTable().column(2).search(this.value).draw(); // Filtra por fecha de emisión
-            });
         });
     </script>
 </body>
@@ -231,8 +219,6 @@ if (isset($result)) {
     pg_free_result($result);
 }
 
-// Cerrar la conexión si existe
-if (isset($conn)) {
-    pg_close($conn);
-}
+// Cerrar la conexión a la base de datos
+pg_close($conn);
 ?>
