@@ -54,3 +54,23 @@ th {
 .actions a:hover {
     color: #007bff;
 }
+
+.view-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+.view-button:hover {
+    background-color: #45a049;
+}
+
+.fa-eye {
+    color: white;
+}
+

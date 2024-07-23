@@ -10,83 +10,6 @@
     <link rel="stylesheet" href="../styles/ver_orden_compra.css">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        .button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-            margin-top: 20px;
-        }
-
-        .button:hover {
-            background-color: #45a049;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .actions a {
-            color: black;
-            margin: 0 5px;
-            text-decoration: none;
-        }
-
-        .actions a:hover {
-            color: #007bff;
-        }
-        
-        .view-button {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        .view-button:hover {
-            background-color: #0056b3;
-        }
-
-        .fa-eye {
-            color: #007bff;
-        }
-    </style>
 </head>
 <body>
     <h1>Lista de Órdenes de Compra</h1>
@@ -180,3 +103,4 @@
     </script>
 </body>
 </html>
+
